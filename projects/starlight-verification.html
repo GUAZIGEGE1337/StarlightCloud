@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starlight Verification - 安全验证系统 | Starlight Development Team</title>
+<link rel="icon" href="../assets/images/Starlight.png" type="image/png">
+<script src="../assets/js/anime.min.js"></script>
+<style>
+:root {
+  --primary-blue: #e6f0ff;
+  --primary-pink: #ffe6f0;
+  --accent-blue: #4a90e2;
+  --accent-pink: #ff7eb9;
+  --text-dark: #2d3748;
+  --text-light: #718096;
+  --white: rgba(255, 255, 255, 0.85);
+  --glass: rgba(255, 255, 255, 0.25);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-pink) 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 1000;
+  padding: 1rem 5%;
+  transition: all 0.3s ease;
+}
+
+nav.scrolled {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rem 5% 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: float 6s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 900px;
+  animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+  from { filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.3)); }
+  to { filter: drop-shadow(0 0 30px rgba(255, 126, 185, 0.4)); }
+}
+
+.hero .subtitle {
+  font-size: 1.3rem;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.3s forwards;
+}
+
+.hero p {
+  font-size: 1.15rem;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.5s forwards;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.7s forwards;
+  flex-wrap: wrap;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+  border: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.cta-button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+}
+
+.cta-button.outline {
+  background: transparent;
+  color: var(--accent-blue);
+  border: 2px solid var(--accent-blue);
+  box-shadow: none;
+}
+
+.cta-button.outline:hover {
+  background: var(--accent-blue);
+  color: #fff;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--text-light);
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+
+.features {
+  padding: 5rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.feature-card {
+  background: var(--glass);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+  transform: translateY(30px);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover::before {
+  transform: scaleX(1);
+}
+
+.feature-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: rotate(15deg) scale(1.1);
+}
+
+.feature-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.feature-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.feature-card p {
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+.pricing {
+  padding: 5rem 5%;
+  background: linear-gradient(135deg, rgba(230, 240, 255, 0.4) 0%, rgba(255, 230, 240, 0.4) 100%);
+  text-align: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.price-card {
+  max-width: 500px;
+  margin: 3rem auto;
+  background: var(--glass);
+  border-radius: 25px;
+  padding: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.price-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.price-tag {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 1rem 0;
+  position: relative;
+  display: inline-block;
+}
+
+.price-tag::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transform: scaleX(0.8);
+  border-radius: 3px;
+}
+
+.price-features {
+  list-style: none;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.price-features li {
+  padding: 0.5rem 0;
+  color: var(--text-light);
+  position: relative;
+  padding-left: 2rem;
+}
+
+.price-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent-blue);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.updates {
+  padding: 5rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.update-item {
+  background: var(--glass);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+  transition: all 0.3s ease;
+}
+
+.update-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(74, 144, 226, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.update-date {
+  font-weight: 700;
+  color: var(--accent-blue);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.update-content {
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.eula-section {
+  padding: 5rem 5%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(230, 240, 255, 0.3) 0%, rgba(255, 230, 240, 0.3) 100%);
+}
+
+.eula-container {
+  background: var(--glass);
+  border-radius: 25px;
+  padding: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+  max-height: 70vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.eula-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.eula-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.eula-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  border-radius: 4px;
+}
+
+.eula-content h3 {
+  font-size: 1.4rem;
+  margin: 2rem 0 1rem;
+  color: var(--text-dark);
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+.eula-content h4 {
+  font-size: 1.1rem;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.eula-content p, .eula-content li {
+  color: var(--text-light);
+  line-height: 1.8;
+  margin-bottom: 0.8rem;
+}
+
+.eula-content ul, .eula-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.eula-content li {
+  margin-bottom: 0.5rem;
+}
+
+.eula-date {
+  text-align: center;
+  color: var(--accent-blue);
+  font-weight: 600;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.eula-contact {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.4);
+  text-align: center;
+}
+
+.eula-contact p {
+  margin-bottom: 0.5rem;
+}
+
+.eula-contact a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.eula-contact a:hover {
+  color: var(--accent-pink);
+}
+
+.contact {
+  padding: 5rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.contact-links a {
+  text-decoration: none;
+  color: #fff;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.contact-links a:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+}
+
+footer {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 2rem 5%;
+  text-align: center;
+  color: var(--text-light);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.footer-links {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transition: width 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-blue);
+}
+
+.footer-links a:hover::after {
+  width: 100%;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  transition: gap 0.3s ease;
+}
+
+.back-link:hover {
+  gap: 1rem;
+}
+
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  animation: floatParticle 20s infinite linear;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateY(-100px) translateX(50px) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-200px) translateX(-30px) scale(0.8);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translateY(-300px) translateX(80px) scale(1.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(0) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .nav-links {
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  .eula-container {
+    padding: 2rem 1.5rem;
+    max-height: 60vh;
+  }
+  .contact-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .contact-links a {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+
+<nav id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-icon"><img src="../assets/images/Starlight.png" alt="Starlight"></div>
+      <span>Starlight Team</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="../index.html#projects">项目</a></li>
+      <li><a href="#features">特性</a></li>
+      <li><a href="#pricing">价格</a></li>
+      <li><a href="#eula">协议</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <a href="../index.html" class="back-link">← 返回首页</a>
+    <h1>Starlight Verification</h1>
+    <div class="subtitle">新一代安全验证解决方案</div>
+    <p>为您的应用提供稳定、安全、易用的身份验证服务。支持用户管理、项目授权、IRC 聊天等功能。</p>
+    <div class="hero-buttons">
+      <a href="https://qm.qq.com/q/hZoerSpkFG" class="cta-button" target="_blank">获取服务</a>
+      <a href="#features" class="cta-button outline">了解更多</a>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <h2 class="section-title">核心特性</h2>
+  <p class="section-subtitle">全方位的安全验证服务</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M16 2h-3v2h3v4h-2v2h-2v-2h-2v2H9v-2H7v4h3v2h3v-2h2v2h2v-2h2v-2h2V8h-2V6h-2V4h-2V2z"/></svg>
+      </div>
+      <h3>简单部署</h3>
+      <p>提供完善的 API 接口，大幅降低开发者部署成本。完整的技术支持，部署仅需几分钟即可接入使用。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 8l10 5 10-5"/></svg>
+      </div>
+      <h3>邮箱找回密码</h3>
+      <p>支持安全的邮箱密码找回机制，采用加密令牌验证，确保账户安全。用户可通过验证邮箱快速重置密码。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="1"/><rect x="4" y="14" width="16" height="6" rx="1"/><path d="M12 10v4"/></svg>
+      </div>
+      <h3>稳定服务器通讯</h3>
+      <p>基于高性能分布式架构，提供 99.9% 的可用性保证。自动负载均衡和故障转移，确保验证服务持续稳定运行。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg>
+      </div>
+      <h3>在线 IRC 聊天</h3>
+      <p>内置 IRC 聊天功能，支持实时在线交流。提供私聊、群组、频道等多种沟通方式，方便用户即时互动。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M7 7h10M7 11h10M7 15h6"/></svg>
+      </div>
+      <h3>友好的客户端界面</h3>
+      <p>采用现代化 UI 设计，界面简洁直观。即使是新手用户也能快速上手，提供流畅的用户体验和清晰的操作指引。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2l4 4v6a8 8 0 0 1-8 8 8 8 0 0 1-8-8V6l4-4z"/></svg>
+      </div>
+      <h3>安全的通讯方式</h3>
+      <p>采用加密传输，支持端到端加密。内置防中间人攻击机制，确保所有通讯数据的安全性和隐私性。</p>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <h2 class="section-title">灵活的价格方案</h2>
+  <div class="price-card">
+    <h3>基础版</h3>
+    <div class="price-tag">¥10<span style="font-size:1rem">/月</span></div>
+    <p>性价比之选，包含核心功能</p>
+    <ul class="price-features">
+      <li>验证服务</li>
+      <li>IRC 聊天服务</li>
+      <li>项目管理</li>
+      <li>技术支持</li>
+      <li>API 访问权限</li>
+    </ul>
+    <a href="https://qm.qq.com/q/hZoerSpkFG" class="cta-button" style="width:100%;text-align:center" target="_blank">立即开始使用</a>
+  </div>
+</section>
+
+<section class="updates" id="updates">
+  <h2 class="section-title">更新日志</h2>
+
+  <div class="update-item">
+    <div class="update-date">2.1 版本</div>
+    <div class="update-content">添加证书管理功能用于客户端和服务端安全通信</div>
+    <div class="update-content">优化代码格式和导入顺序</div>
+    <div class="update-content">使用加密通道发送心跳包</div>
+    <div class="update-content">升级加密算法并优化并发请求处理</div>
+    <div class="update-content">增强客户端安全防护机制</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">2.0 版本</div>
+    <div class="update-content">升级版本号至 2.0，重构系统核心架构</div>
+    <div class="update-content">格式化代码并优化进程终止功能</div>
+    <div class="update-content">移除调试日志并优化安全检查逻辑</div>
+    <div class="update-content">重构激活码格式和系统管理功能</div>
+    <div class="update-content">添加反篡改和进程保护功能</div>
+    <div class="update-content">实现网络通信加密和设备绑定功能</div>
+    <div class="update-content">解决 HWID 验证问题并添加调试日志</div>
+    <div class="update-content">更新 HWID 验证实现以使用更多硬件信息</div>
+    <div class="update-content">添加反篡改检测功能并优化安全验证流程</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">1.8.2 版本</div>
+    <div class="update-content">更新版本并调整系统配置</div>
+    <div class="update-content">更新服务器配置并添加用户名中文字符验证</div>
+    <div class="update-content">添加移动端支持和 HWID 管理功能</div>
+    <div class="update-content">移除激活码和激活时间存储功能</div>
+    <div class="update-content">刷新当前版本号以同步设置成功后的状态</div>
+    <div class="update-content">调整心跳超时配置并重命名参数模式设置方法</div>
+    <div class="update-content">更新版本并重构 HWID 生成和配置管理</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">1.8 版本</div>
+    <div class="update-content">将多个类中的私有成员改为公共访问权限</div>
+    <div class="update-content">优化代码格式和导入声明</div>
+    <div class="update-content">重构项目界面并添加开发者功能</div>
+    <div class="update-content">修复版本检查中的变量拼写错误</div>
+    <div class="update-content">添加 Native 注解并优化硬件 ID 生成逻辑</div>
+    <div class="update-content">更新版本号为修复版本</div>
+    <div class="update-content">格式化代码并优化 HWID 生成逻辑</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">1.7 版本</div>
+    <div class="update-content">修改连通信方式为 Netty，优化通信加密方式</div>
+    <div class="update-content">添加通信签名效验、公钥私钥验证、心跳验证</div>
+    <div class="update-content">添加 Demo 和 FCL 等启动器验证解决方案</div>
+    <div class="update-content">添加 IP 封禁和用户名 IP 追封功能</div>
+    <div class="update-content">优化客户端连接关闭，添加激活码信息追溯</div>
+    <div class="update-content">添加海外 IP 屏蔽配置和拦截功能</div>
+    <div class="update-content">重构控制台命令系统并优化项目服务</div>
+    <div class="update-content">修复版本检查错误消息</div>
+    <div class="update-content">添加项目版本管理和检查功能</div>
+    <div class="update-content">更新服务器配置地址和端口</div>
+    <div class="update-content">添加配置管理命令和日志记录功能</div>
+    <div class="update-content">更新 AES 加密密钥，添加 AES 加密工具类并修改登录信息加密</div>
+    <div class="update-content">调整构建配置和版本设置</div>
+    <div class="update-content">添加激活时间追踪功能并重构控制台命令</div>
+    <div class="update-content">添加激活日志存储功能并完善命令系统</div>
+    <div class="update-content">优化图形渲染质量和 IP 封禁提示信息</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">1.6 版本</div>
+    <div class="update-content">支持更多平台</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">1.5 版本</div>
+    <div class="update-content">补全版本检测逻辑，修复已知问题</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">1.4 版本</div>
+    <div class="update-content">修改字体为 MiSans，修复已知问题</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">1.3 版本</div>
+    <div class="update-content">同步后端修改，完善并开启重置信息功能</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">1.2 版本</div>
+    <div class="update-content">重构客户端代码，修复已知问题</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">1.1 版本</div>
+    <div class="update-content">修复已知问题</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">2025年10月</div>
+    <div class="update-content">重构双端通信协议，添加完善项目激活码功能及相关逻辑，重置版本号为 1.0</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">2025年8月</div>
+    <div class="update-content">开放注册功能，重构服务端逻辑，完善用户面板</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">2025年7月</div>
+    <div class="update-content">客户端界面重构，采用更加现代化界面和 macOS 标题栏</div>
+  </div>
+
+  <div class="update-item">
+    <div class="update-date">2024年10月</div>
+    <div class="update-content">该项目更新首个版本并命名为 Starlight Verification，正式发布安全验证解决方案</div>
+  </div>
+</section>
+
+<section class="eula-section" id="eula">
+  <h2 class="section-title">用户协议</h2>
+  <div class="eula-container">
+    <div class="eula-content">
+      <div class="eula-date">最后更新日期：2025 年 2 月 9日</div>
+      
+      <h3>一、许可类型与范围</h3>
+      
+      <h4>（一）最终用户许可</h4>
+      <p>Starlight Development Team 授予个人用户在中华人民共和国境内使用本系统进行身份验证的非独占、不可转让权限。</p>
+      <p>用户不得利用账号从事任何盈利性活动（包括但不限于资源倒卖）。未经 Starlight Development Team 书面同意，严禁以出租、出借、共享等方式将账号提供给他人使用。</p>
+      
+      <h4>（二）开发者用户许可</h4>
+      <p>针对将本系统集成至其开发的 2B2T 客户端的开发者，Starlight Development Team 授予非独占、可撤销的商业使用许可。</p>
+      <p>开发者必须确保验证服务仅用于自身关联项目，不得应用于其他无关项目。开发者需对托管程序的安全性与合规性承担全部责任。</p>
+      
+      <h3>二、用户注册、认证及管理</h3>
+      
+      <h4>（一）注册要求</h4>
+      <p>用户注册时需提供真实有效的个人信息，包括用户名、密码及电子邮箱地址。注册信息请务必牢记。</p>
+      <p>用户应妥善保管账号信息。因保管不当导致账号被盗用的，Starlight Development Team 不承担责任。</p>
+      
+      <h4>（二）HWID 绑定机制</h4>
+      <p>本系统采用 HWID（硬件识别码）技术绑定设备与账号，以提升安全性。每个账号可绑定的设备数量上限由 Starlight Development Team 设定。</p>
+      
+      <h4>（三）激活码管理</h4>
+      <p>激活码用于激活特定功能或项目权限，一经使用即与账号及 HWID 绑定并自动失效。严禁转让、共享或滥用激活码。</p>
+      
+      <h3>三、数据处理原则</h3>
+      
+      <h4>（一）数据安全</h4>
+      <p>本系统对用户数据进行加密，确保传输与存储安全。敏感操作触发双重验证机制，结合 HWID 识别技术防范账号盗用风险。</p>
+      
+      <h4>（二）隐私保护</h4>
+      <p>Starlight Development Team 承诺未经用户明确同意，不会泄露其个人信息。系统仅收集验证所必需的数据。</p>
+      
+      <h3>四、技术支持及更新</h3>
+      
+      <h4>（一）技术支持</h4>
+      <p>Starlight Development Team 将根据自身资源为用户提供合理水平的技术支持，建议用户优先通过官方渠道寻求帮助。</p>
+      
+      <h4>（二）系统更新</h4>
+      <p>Starlight Development Team 有权随时更新系统以优化性能、修复漏洞或提升安全性。用户继续使用即视为接受更新版本。</p>
+      
+      <h3>五、使用规范与违规处理</h3>
+      
+      <h4>（一）禁止行为</h4>
+      <ul>
+        <li>用户不得对本系统进行逆向工程、破解或尝试破解</li>
+        <li>用户不得擅自移除系统中的版权声明或专有标识</li>
+        <li>用户不得传播本系统的破解、逆向工程信息</li>
+        <li>用户不得实施导致服务器过载、崩溃的行为</li>
+        <li>用户不得将本系统用于任何违法或破坏性行为</li>
+        <li>用户不得使用自动化脚本批量操作账号</li>
+      </ul>
+      
+      <h4>（二）违规后果</h4>
+      <p>若用户违反上述规定，Starlight Development Team 有权采取以下措施：</p>
+      <ul>
+        <li>立即终止使用权限，无需通知</li>
+        <li>将违规用户永久移出系统用户群</li>
+        <li>封禁移除其账号并对同 IP 进行封禁</li>
+      </ul>
+      
+      <h3>六、免责声明</h3>
+      <p>本系统按"现状"提供，不作任何明示或暗示担保。Starlight Development Team 对不可抗力、用户设备故障、第三方服务异常等情况导致的损失不承担责任。</p>
+      
+      <h3>七、知识产权</h3>
+      <p>本系统的所有知识产权（包括源代码、技术文档、界面设计等）均归 Starlight Development Team 所有。</p>
+      
+      <h3>八、协议终止</h3>
+      <p>用户违反本协议任何条款时，Starlight Development Team 有权随时终止协议，收回所有使用权限。</p>
+      
+      <h3>九、法律适用与争议解决</h3>
+      <p>本协议适用中华人民共和国法律。</p>
+      
+      <h3>十、协议修改与解释权</h3>
+      <p>Starlight Development Team 保留随时修改本协议的权利，拥有本协议的最终解释权。</p>
+      
+      <div class="eula-contact">
+        <h3>十一、联系方式</h3>
+        <p>如有疑问或需协助，请联系：</p>
+        <p>电子邮箱：<a href="mailto:StarlightDevelopmentTeam@outlook.com">StarlightDevelopmentTeam@outlook.com</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <h2 class="section-title">联系我们</h2>
+  <p>有任何问题或建议？欢迎通过以下方式联系我们</p>
+  <div class="contact-links">
+    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+    <a href="https://qm.qq.com/q/hZoerSpkFG" target="_blank">QQ 群</a>
+    <a href="mailto:StarlightDevelopmentTeam@outlook.com">电子邮件</a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Starlight Development Team. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="../index.html">首页</a>
+    <a href="starlight-shield.html">Starlight Shield</a>
+    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+const createParticle = () => {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.top = '100%';
+  p.style.animationDelay = Math.random() * 5 + 's';
+  const size = Math.random() * 4 + 2;
+  p.style.width = p.style.height = size + 'px';
+  document.getElementById('particles').appendChild(p);
+  setTimeout(() => p.remove(), 20000);
+};
+setInterval(createParticle, 300);
+for (let i = 0; i < 5; i++) setTimeout(createParticle, i * 200);
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      anime({
+        targets: entry.target,
+        opacity: [0, 1],
+        translateY: [30, 0],
+        delay: i * 100,
+        duration: 800,
+        easing: 'easeOutQuad'
+      });
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.feature-card').forEach(card => io.observe(card));
+document.querySelectorAll('.update-item').forEach(item => io.observe(item));
+</script>
+</body>
+</html>

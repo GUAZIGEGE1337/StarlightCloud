@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starlight Development Team - 星光开发团队</title>
+<link rel="icon" href="assets/images/Starlight.png" type="image/png">
+<script src="assets/js/anime.min.js"></script>
+<style>
+:root {
+  --primary-blue: #e6f0ff;
+  --primary-pink: #ffe6f0;
+  --accent-blue: #4a90e2;
+  --accent-pink: #ff7eb9;
+  --text-dark: #2d3748;
+  --text-light: #718096;
+  --white: rgba(255, 255, 255, 0.85);
+  --glass: rgba(255, 255, 255, 0.25);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-pink) 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 1000;
+  padding: 1rem 5%;
+  transition: all 0.3s ease;
+}
+
+nav.scrolled {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 5% 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: float 6s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 900px;
+  animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+  from { filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.3)); }
+  to { filter: drop-shadow(0 0 30px rgba(255, 126, 185, 0.4)); }
+}
+
+.hero .subtitle {
+  font-size: 1.5rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.3s forwards;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.5s forwards;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.7s forwards;
+  flex-wrap: wrap;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+  border: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.cta-button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+}
+
+.cta-button.outline {
+  background: transparent;
+  color: var(--accent-blue);
+  border: 2px solid var(--accent-blue);
+  box-shadow: none;
+}
+
+.cta-button.outline:hover {
+  background: var(--accent-blue);
+  color: #fff;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.projects {
+  padding: 5rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.project-card {
+  background: var(--glass);
+  border-radius: 20px;
+  padding: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+  transform: translateY(30px);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.project-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover::before {
+  transform: scaleX(1);
+}
+
+.project-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.project-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-icon {
+  transform: rotate(10deg) scale(1.1);
+}
+
+.project-icon svg {
+  width: 35px;
+  height: 35px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.project-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+}
+
+.project-card .project-tag {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  color: white;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.project-card p {
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.project-features {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+
+.project-features li {
+  padding: 0.4rem 0;
+  color: var(--text-light);
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.project-features li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent-blue);
+  font-weight: bold;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-blue);
+  font-weight: 600;
+  transition: gap 0.3s ease;
+}
+
+.project-card:hover .project-link {
+  gap: 1rem;
+}
+
+.about {
+  padding: 5rem 5%;
+  background: linear-gradient(135deg, rgba(230, 240, 255, 0.4) 0%, rgba(255, 230, 240, 0.4) 100%);
+  text-align: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about p {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+.contact {
+  padding: 5rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.contact-links a {
+  text-decoration: none;
+  color: #fff;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.contact-links a:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+}
+
+footer {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 2rem 5%;
+  text-align: center;
+  color: var(--text-light);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.footer-links {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transition: width 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-blue);
+}
+
+.footer-links a:hover::after {
+  width: 100%;
+}
+
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  animation: floatParticle 20s infinite linear;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateY(-100px) translateX(50px) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-200px) translateX(-30px) scale(0.8);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translateY(-300px) translateX(80px) scale(1.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(0) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .hero .subtitle {
+    font-size: 1.2rem;
+  }
+  .nav-links {
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats {
+    gap: 2rem;
+  }
+  .contact-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .contact-links a {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+
+<nav id="navbar">
+  <div class="nav-container">
+    <a href="#" class="logo">
+      <div class="logo-icon"><img src="assets/images/Starlight.png" alt="Starlight"></div>
+      <span>Starlight Team</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#projects">项目</a></li>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Starlight Development Team</h1>
+    <div class="subtitle">星光开发团队</div>
+    <p>专注于安全软件开发，为开发者和用户提供专业、可靠的解决方案</p>
+    <div class="hero-buttons">
+      <a href="#projects" class="cta-button">浏览项目</a>
+      <a href="https://github.com/GUAZIGEGE1337" class="cta-button outline" target="_blank">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<section class="projects" id="projects">
+  <h2 class="section-title">我们的项目</h2>
+  <div class="projects-grid">
+    <a href="projects/starlight-shield.html" class="project-card">
+      <div class="project-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Starlight Shield</h3>
+      <span class="project-tag">Java 安全工具</span>
+      <p>一款功能强大的 Java 代码保护工具，通过将 Java 字节码转换为原生代码，为您的应用程序提供多层安全保护，有效防止逆向工程和代码泄露。</p>
+      <ul class="project-features">
+        <li>字符串与数组加密保护</li>
+        <li>控制流混淆技术</li>
+        <li>跨平台原生库编译</li>
+        <li>多层安全防护机制</li>
+      </ul>
+      <span class="project-link">了解更多 →</span>
+    </a>
+
+    <a href="projects/starlight-verification.html" class="project-card">
+      <div class="project-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3>Starlight Verification</h3>
+      <span class="project-tag">身份验证系统</span>
+      <p>新一代安全验证解决方案，为您的应用提供稳定、安全、易用的身份验证服务。支持用户管理、项目授权、IRC 聊天等功能。</p>
+      <ul class="project-features">
+        <li>安全的用户身份验证</li>
+        <li>项目授权与激活码管理</li>
+        <li>内置 IRC 实时聊天</li>
+        <li>邮箱找回密码支持</li>
+      </ul>
+      <span class="project-link">了解更多 →</span>
+    </a>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-content">
+    <h2 class="section-title">关于我们</h2>
+    <p>
+      <strong>Starlight Development Team</strong> 是一支专注于<strong>安全软件开发</strong>与 <strong>Minecraft 客户端生态</strong>的技术团队。我们致力于为开发者和用户提供专业、可靠的软件解决方案，涵盖代码保护、身份验证及客户端开发协助等多个领域。
+    </p>
+    <p style="margin-top: 1rem;">
+      我们的产品包括 <strong>Starlight Shield</strong>（Java 代码保护工具）与 <strong>Starlight Verification</strong>（安全验证系统），同时为多款 Minecraft 客户端如 Perish、OolongTea Client、Starlight、Astronaut、Sugar、Zenith、Yuki、Spectrum 等提供开发协助、验证服务与安全保护。
+    </p>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-number">3+</div>
+        <div class="stat-label">核心产品</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">10+</div>
+        <div class="stat-label">合作客户端</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">3+</div>
+        <div class="stat-label">支持平台</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">技术支持</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <h2 class="section-title">联系我们</h2>
+  <p>有任何问题或建议？欢迎通过以下方式联系我们</p>
+  <div class="contact-links">
+    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+    <a href="https://qm.qq.com/q/hZoerSpkFG" target="_blank">QQ 群</a>
+    <a href="mailto:StarlightDevelopmentTeam@outlook.com">电子邮件</a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Starlight Development Team. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="projects/starlight-shield.html">Starlight Shield</a>
+    <a href="projects/starlight-verification.html">Starlight Verification</a>
+    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+const createParticle = () => {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.top = '100%';
+  p.style.animationDelay = Math.random() * 5 + 's';
+  const size = Math.random() * 4 + 2;
+  p.style.width = p.style.height = size + 'px';
+  document.getElementById('particles').appendChild(p);
+  setTimeout(() => p.remove(), 20000);
+};
+setInterval(createParticle, 300);
+for (let i = 0; i < 5; i++) setTimeout(createParticle, i * 200);
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      anime({
+        targets: entry.target,
+        opacity: [0, 1],
+        translateY: [30, 0],
+        delay: i * 100,
+        duration: 800,
+        easing: 'easeOutQuad'
+      });
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.project-card').forEach(card => io.observe(card));
+</script>
+</body>
+</html>

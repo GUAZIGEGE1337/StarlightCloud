@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starlight Shield - Java 代码保护工具 | Starlight Development Team</title>
+<link rel="icon" href="../assets/images/Starlight.png" type="image/png">
+<script src="../assets/js/anime.min.js"></script>
+<style>
+:root {
+  --primary-blue: #e6f0ff;
+  --primary-pink: #ffe6f0;
+  --accent-blue: #4a90e2;
+  --accent-pink: #ff7eb9;
+  --text-dark: #2d3748;
+  --text-light: #718096;
+  --white: rgba(255, 255, 255, 0.85);
+  --glass: rgba(255, 255, 255, 0.25);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-pink) 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 1000;
+  padding: 1rem 5%;
+  transition: all 0.3s ease;
+}
+
+nav.scrolled {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.hero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rem 5% 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: float 6s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 900px;
+  animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+  from { filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.3)); }
+  to { filter: drop-shadow(0 0 30px rgba(255, 126, 185, 0.4)); }
+}
+
+.hero .subtitle {
+  font-size: 1.3rem;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.3s forwards;
+}
+
+.hero p {
+  font-size: 1.15rem;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.5s forwards;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeInUp 1s ease 0.7s forwards;
+  flex-wrap: wrap;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+  border: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.cta-button:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+}
+
+.cta-button.outline {
+  background: transparent;
+  color: var(--accent-blue);
+  border: 2px solid var(--accent-blue);
+  box-shadow: none;
+}
+
+.cta-button.outline:hover {
+  background: var(--accent-blue);
+  color: #fff;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--text-light);
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+
+.features {
+  padding: 5rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.feature-card {
+  background: var(--glass);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+  transform: translateY(30px);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover::before {
+  transform: scaleX(1);
+}
+
+.feature-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: rotate(15deg) scale(1.1);
+}
+
+.feature-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.feature-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.feature-card p {
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+.platforms {
+  padding: 5rem 5%;
+  background: linear-gradient(135deg, rgba(230, 240, 255, 0.4) 0%, rgba(255, 230, 240, 0.4) 100%);
+  text-align: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.platforms-grid {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.platform-item {
+  background: var(--glass);
+  border-radius: 15px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-width: 150px;
+  transition: all 0.3s ease;
+}
+
+.platform-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(74, 144, 226, 0.15);
+}
+
+.platform-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.platform-name {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.platform-arch {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.usage {
+  padding: 5rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.code-block {
+  background: rgba(30, 30, 30, 0.9);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.code-block code {
+  color: #e6e6e6;
+}
+
+.code-comment {
+  color: #6a9955;
+}
+
+.code-keyword {
+  color: #569cd6;
+}
+
+.code-string {
+  color: #ce9178;
+}
+
+.requirements {
+  padding: 5rem 5%;
+  background: linear-gradient(135deg, rgba(230, 240, 255, 0.4) 0%, rgba(255, 230, 240, 0.4) 100%);
+}
+
+.requirements-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.requirements-list {
+  list-style: none;
+  margin-top: 2rem;
+}
+
+.requirements-list li {
+  padding: 1rem;
+  background: var(--glass);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.requirements-list li::before {
+  content: "✓";
+  color: var(--accent-blue);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.contact {
+  padding: 5rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.contact-links a {
+  text-decoration: none;
+  color: #fff;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.contact-links a:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+}
+
+footer {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 2rem 5%;
+  text-align: center;
+  color: var(--text-light);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.footer-links {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  transition: width 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-blue);
+}
+
+.footer-links a:hover::after {
+  width: 100%;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  transition: gap 0.3s ease;
+}
+
+.back-link:hover {
+  gap: 1rem;
+}
+
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  animation: floatParticle 20s infinite linear;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateY(-100px) translateX(50px) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-200px) translateX(-30px) scale(0.8);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translateY(-300px) translateX(80px) scale(1.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(0) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .nav-links {
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  .platforms-grid {
+    gap: 1rem;
+  }
+  .contact-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .contact-links a {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+
+<nav id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="logo">
+      <div class="logo-icon"><img src="../assets/images/Starlight.png" alt="Starlight"></div>
+      <span>Starlight Team</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="../index.html#projects">项目</a></li>
+      <li><a href="#features">特性</a></li>
+      <li><a href="#usage">使用</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <a href="../index.html" class="back-link">← 返回首页</a>
+    <h1>Starlight Shield</h1>
+    <div class="subtitle">Java 代码保护工具</div>
+    <p>通过将 Java 字节码转换为原生代码，为您的应用程序提供多层安全保护，有效防止逆向工程和代码泄露。</p>
+    <div class="hero-buttons">
+      <a href="https://github.com/GUAZIGEGE1337/Starlight-Shield" class="cta-button" target="_blank">GitHub</a>
+      <a href="#features" class="cta-button outline">了解更多</a>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <h2 class="section-title">核心特性</h2>
+  <p class="section-subtitle">多层安全保护，全方位守护您的代码</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h3>数据加密保护</h3>
+      <p>支持字符串和数组的多层加密保护，在运行时动态解密，有效防止敏感数据被提取。加密过程完全自动化，无需手动修改代码。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>控制流混淆</h3>
+      <p>将代码逻辑转换为状态机模式，插入虚假控制流分支，使反编译器无法确定实际执行路径，大幅提升代码分析难度。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <h3>指令替换</h3>
+      <p>将简单的运算指令替换为复杂的等效运算，增加代码分析难度。支持多种运算类型的替换，包括算术运算、位运算等。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3>跨平台支持</h3>
+      <p>支持 Windows、macOS、Linux 三大主流平台，覆盖 x86_64 和 AARCH64 架构。一次配置，多平台编译输出。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3>原生代码编译</h3>
+      <p>使用 Zig 编译器将 Java 字节码转换为 C 代码并编译为原生库，代码不再以 Java 字节码形式存在，从根本上防止反编译。</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
+      <h3>灵活配置</h3>
+      <p>通过 XML 配置文件精确控制混淆范围，支持 Ant 风格路径匹配。可选择性启用各项保护功能，平衡安全性与性能。</p>
+    </div>
+  </div>
+</section>
+
+<section class="platforms" id="platforms">
+  <h2 class="section-title">支持平台</h2>
+  <p class="section-subtitle">一次配置，多平台输出</p>
+  <div class="platforms-grid">
+    <div class="platform-item">
+      <div class="platform-icon">🪟</div>
+      <div class="platform-name">Windows</div>
+      <div class="platform-arch">x86_64, AARCH64</div>
+    </div>
+    <div class="platform-item">
+      <div class="platform-icon">🍎</div>
+      <div class="platform-name">macOS</div>
+      <div class="platform-arch">x86_64, AARCH64</div>
+    </div>
+    <div class="platform-item">
+      <div class="platform-icon">🐧</div>
+      <div class="platform-name">Linux</div>
+      <div class="platform-arch">x86_64, AARCH64</div>
+    </div>
+  </div>
+</section>
+
+<section class="usage" id="usage">
+  <h2 class="section-title">混淆效果展示</h2>
+  <p class="section-subtitle">对比普通 Native 翻译与Starlight Shield混淆保护效果</p>
+
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+    
+    <!-- C Layer Comparison -->
+    <div style="margin-bottom: 4rem;">
+      <h3 style="margin: 2rem 0 1.5rem; color: var(--text-dark); font-size: 1.5rem; text-align: center;">
+        <span style="background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">C 层代码保护对比</span>
+      </h3>
+      
+      <div style="display: flex; justify-content: center; gap: 2rem;">
+        <!-- Before -->
+        <div style="background: var(--glass); border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); width: 520px; flex-shrink: 0;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+            <div style="width: 12px; height: 12px; background: #ff5f57; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
+            <span style="margin-left: 0.5rem; color: var(--text-light); font-size: 0.9rem; font-weight: 500;">普通 Native 翻译</span>
+          </div>
+          <div class="code-block" style="height: 380px; overflow-y: auto; margin: 0; border-radius: 10px;">
+            <code style="white-space: pre; font-size: 0.75rem; display: block;">void JNICALL Starlight_1(JNIEnv *env, jobject obj, jint arg0) {
+    jvalue cstack0; memset(&cstack0, 0, sizeof(jvalue));
+    jvalue cstack1; memset(&cstack1, 0, sizeof(jvalue));
+    jvalue cstack2; memset(&cstack2, 0, sizeof(jvalue));
+    
+    jvalue clocal0; memset(&clocal0, 0, sizeof(jvalue));
+    jvalue clocal1; memset(&clocal1, 0, sizeof(jvalue));
+    
+    jvalue temp0; memset(&temp0, 0, sizeof(jvalue));
+    
+    clocal0.l = obj;
+    clocal1.i = arg0;
+    
+    cstack0.l = clocal0.l;
+    cstack0.l = (*env)->GetObjectField(env, cstack0.l, c_0_(env)->id_2);
+    if ((*env)->ExceptionCheck(env)) { return; }
+    cstack1.l = clocal0.l;
+    cstack1.l = (*env)->GetObjectField(env, cstack1.l, c_0_(env)->id_0);
+    if ((*env)->ExceptionCheck(env)) { return; }
+    cstack2.i = clocal1.i;
+    cstack1.l = (*env)->CallObjectMethod(env, cstack1.l, c_7_(env)->method_0, cstack2.i);
+    if ((*env)->ExceptionCheck(env)) { return; }
+    if (cstack1.l != NULL && !(*env)->IsInstanceOf(env, cstack1.l, c_8_(env)->clazz)){
+        throw_exception(env, "java/lang/ClassCastException", "cannot cast to ", -1);
+        (*env)->ThrowNew(env, c_9_(env)->clazz, "");
+    }
+    if ((*env)->ExceptionCheck(env)) { return; }
+    (*env)->CallVoidMethod(env, cstack0.l, c_3_(env)->method_1, cstack1.l);
+    if ((*env)->ExceptionCheck(env)) { return; }
+    return;
+        return ;
+}</code>
+          </div>
+        </div>
+
+        <!-- After -->
+        <div style="background: var(--glass); border-radius: 20px; padding: 1.5rem; border: 2px solid rgba(74, 144, 226, 0.5); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(74, 144, 226, 0.1); width: 520px; flex-shrink: 0;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+            <div style="width: 12px; height: 12px; background: #ff5f57; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
+            <span style="margin-left: 0.5rem; color: var(--accent-blue); font-size: 0.9rem; font-weight: 600;">Starlight Shield混淆保护</span>
+            <span style="margin-left: auto; background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink)); color: white; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.75rem;">Protected</span>
+          </div>
+          <div class="code-block" style="height: 380px; overflow-y: auto; margin: 0; border-radius: 10px;">
+            <code style="white-space: pre; font-size: 0.75rem; display: block;">void JNICALL Starlight_1(JNIEnv *env, jobject obj, jint arg0) {
+    jvalue cstack0; memset(&cstack0, 0, sizeof(jvalue));
+    jvalue cstack1; memset(&cstack1, 0, sizeof(jvalue));
+    jvalue cstack2; memset(&cstack2, 0, sizeof(jvalue));
+    
+    jvalue clocal0; {
+        // Dynamic decryption region 0
+        static const unsigned char _enc_0[] = {0xB1, 0xB2, 0xB1, 0x74, 0xB2, 0x94, 0x19, 0xDA, 0x72, 0x91, 0xF1, 0x72, 0x32, 0x91, 0x1C, 0x99, 0x1A, 0x1C, 0x99, 0x1A, 0x74, 0x31, 0x53, 0xB2, 0xF1, 0xD2, 0x19, 0x51, 0xD4, 0x32, 0x91, 0xB4, 0xB2, 0x39, 0x39, 0x7B};
+        static const int _xor_0 = 104;
+        static const int _add_0 = 136;
+        static const int _rot_0 = 5;
+        char _dec_0[37];
+        for (int _i = 0; _i < sizeof(_enc_0); _i++) {
+            unsigned char _b = _enc_0[_i];
+            _b = ((_b >> _rot_0) | (_b << (8 - _rot_0))) & 0xFF;
+            _b = (_b - _add_0) & 0xFF;
+            _b = _b ^ _xor_0;
+            _dec_0[_i] = (char)_b;
+        }
+        _dec_0[36] = '\0';
+        // Execute decrypted code
+        ((void(*)(void))_dec_0)();
+        memset(_dec_0, 0, sizeof(_dec_0));
+    }
+    
+    jvalue clocal1; memset(&clocal1, 0, sizeof(jvalue));
+    
+    jvalue temp0; memset(&temp0, 0, sizeof(jvalue));
+    
+    clocal0.l = obj;
+    clocal1.i = arg0;
+    if (!((3 & 0x55555555) + (3 & 0xAAAAAAAA) != 0)) {
+        volatile int bogus_1 = ((0 << 16) | (62 & 0xFFFF)) ^ 0xDEADBEEF;
+        volatile int bogus_2 = (76 * 0x9E3779B9) >> 16;
+        volatile int bogus_3 = ((12 + 81) ^ (12 - 81)) & 0xFF;
+        volatile int bogus_4 = ((58 + 12) ^ (58 - 12)) & 0xFF;
+    {
+        char str_k_0[7];
+        for (int m_h_1 = 0; m_h_1 < 6; m_h_1++) {
+            str_k_0[m_h_1] = (char)(66 + (m_h_1 % 26));
+        }
+        str_k_0[6] = '\0';
+        (void)str_k_0;
+    }
+        {
+            volatile int bogus_5 = 80;
+            if (80 > 41) {
+                bogus_5 = (80 - 41) ^ 96;
+            } else if (80 < 41) {
+                bogus_5 = (41 - 80) | 96;
+            } else {
+                bogus_5 = 96;
+            }
+            bogus_5 ^= bogus_5 >> 4;
+        }
+    }
+    
+    if (!(((82 ^ 82) == 0) && ((5 + 0) == 5))) {
+        volatile int bogus_7 = ((22 << 1) ^ 22) & 0xFF;
+        volatile int bogus_8 = ((69 << 16) | (93 & 0xFFFF)) ^ 0xDEADBEEF;
+        {
+            volatile int bogus_9 = 93;
+            for (int _r = 0; _r < 3; _r++) {
+                bogus_9 = (bogus_9 * 31 + 17) ^ (bogus_9 >> 3);
+            }
+        }
+        {
+            volatile int bogus_10 = 83;
+            for (int _r = 0; _r < 2; _r++) {
+                bogus_10 = (bogus_10 * 31 + 17) ^ (bogus_10 >> 3);
+            }
+        }
+        {
+            volatile int bogus_11_a = 44;
+            volatile int bogus_11_b = 67;
+            volatile int bogus_11_c = bogus_11_a ^ bogus_11_b;
+            bogus_11_c = (bogus_11_c << 5) | (bogus_11_c >> 27);
+            bogus_11_c *= 0x9E3779B9;
+        }
+    }
+    cstack0.l = clocal0.l;
+    cstack0.l = (*env)->GetObjectField(env, cstack0.l, c_0_(env)->id_2);
+    if (!((9 > 8) ? ((8 > 5) ? 1 : 1) : ((9 < 5) ? 1 : 1))) {
+        {
+            volatile int bogus_13 = 78;
+            for (int i_13 = 0; i_13 < 3; i_13++) {
+                bogus_13 = (bogus_13 * 5) ^ i_13;
+                bogus_13 |= (bogus_13 << 3) | (bogus_13 >> 5);
+            }
+        }
+        {
+    {
+        char str_8_2[6];
+        for (int idx_3 = 0; idx_3 < 5; idx_3++) {
+            str_8_2[idx_3] = (char)(90 + (idx_3 % 26));
+        }
+        str_8_2[5] = '\0';
+        (void)str_8_2;
+    }
+            volatile int bogus_14_a = 66;
+            volatile int bogus_14_b = 13;
+            volatile int bogus_14_c = bogus_14_a ^ bogus_14_b;
+            bogus_14_c = (bogus_14_c << 5) | (bogus_14_c >> 27);
+            bogus_14_c *= 0x9E3779B9;
+        }
+        {
+            volatile int bogus_15 = 10;
+            for (int _r = 0; _r < 3; _r++) {
+                bogus_15 = (bogus_15 * 31 + 17) ^ (bogus_15 >> 3);
+            }
+        }
+    }
+    if ((*env)->ExceptionCheck(env)) { return; }
+    cstack1.l = clocal0.l;
+    cstack1.l = (*env)->GetObjectField(env, cstack1.l, c_0_(env)->id_0);
+    if ((*env)->ExceptionCheck(env)) { return; }
+    cstack2.i = clocal1.i;
+    cstack1.l = (*env)->CallObjectMethod(env, cstack1.l, c_7_(env)->method_0, cstack2.i);
+    if ((*env)->ExceptionCheck(env)) { return; }
+    if (cstack1.l != NULL && !(*env)->IsInstanceOf(env, cstack1.l, c_8_(env)->clazz)){
+        throw_exception(env, "java/lang/ClassCastException", "cannot cast to ", -1);
+        (*env)->ThrowNew(env, c_9_(env)->clazz, "");
+    }
+    if ((*env)->ExceptionCheck(env)) { return; }
+    (*env)->CallVoidMethod(env, cstack0.l, c_3_(env)->method_1, cstack1.l);
+    if ((*env)->ExceptionCheck(env)) { return; }
+    return;
+        return ;
+}</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Java Layer Comparison -->
+    <div style="margin-bottom: 3rem;">
+      <h3 style="margin: 2rem 0 1.5rem; color: var(--text-dark); font-size: 1.5rem; text-align: center;">
+        <span style="background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Java 层代码保护对比</span>
+      </h3>
+      <p style="color: var(--text-light); text-align: center; margin-bottom: 2rem;">将 Java 方法转换为 Native 方法，源代码完全隐藏</p>
+      
+      <div style="display: flex; justify-content: center; gap: 2rem;">
+        <!-- Before -->
+        <div style="background: var(--glass); border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); width: 520px; flex-shrink: 0;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+            <div style="width: 12px; height: 12px; background: #ff5f57; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
+            <span style="margin-left: 0.5rem; color: var(--text-light); font-size: 0.9rem; font-weight: 500;">混淆前 - 源码暴露</span>
+          </div>
+          <div class="code-block" style="height: 320px; overflow-y: auto; margin: 0; border-radius: 10px;">
+            <code style="white-space: pre; font-size: 0.85rem; display: block;">private void checkCollision() {
+    Tuple var1 = (Tuple)this.positions.get(this.positions.size() - 1);
+
+    for (int var2 = 0; var2 <= this.positions.size() - 2; var2++) {
+        boolean var3 = var1.getX() == ((Tuple)this.positions.get(var2)).getX()
+                    && var1.getY() == ((Tuple)this.positions.get(var2)).getY();
+        if (var3) {
+            this.stopTheGame();
+        }
+    }
+
+    boolean var4 = var1.getX() == this.foodPosition.y
+                && var1.getY() == this.foodPosition.x;
+    if (var4) {
+        System.out.println("Yummy!");
+        this.sizeSnake++;
+        this.foodPosition = this.getValAleaNotInSnake();
+        this.spawnFood(this.foodPosition);
+    }
+}</code>
+          </div>
+        </div>
+
+        <!-- After -->
+        <div style="background: var(--glass); border-radius: 20px; padding: 1.5rem; border: 2px solid rgba(74, 144, 226, 0.5); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(74, 144, 226, 0.1); width: 520px; flex-shrink: 0; display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+            <div style="width: 12px; height: 12px; background: #ff5f57; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
+            <span style="margin-left: 0.5rem; color: var(--accent-blue); font-size: 0.9rem; font-weight: 600;">混淆后 - 仅保留接口</span>
+            <span style="margin-left: auto; background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink)); color: white; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.75rem;">Protected</span>
+          </div>
+          <div class="code-block" style="height: 320px; overflow-y: auto; margin: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <code style="white-space: pre; font-size: 1rem; text-align: center;">private native void checkCollision();</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div style="background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(255, 126, 185, 0.1) 100%); border-radius: 20px; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); text-align: center; margin: 0 auto; max-width: 900px;">
+      <h4 style="color: var(--text-dark); margin-bottom: 1rem; font-size: 1.3rem;">保护效果总结</h4>
+      <p style="color: var(--text-light); line-height: 1.8; max-width: 800px; margin: 0 auto;">
+        通过Starlight Shield处理后的代码，Java 层仅保留 Native 方法声明，所有业务逻辑被转换到 C 层并经过多层混淆保护，
+        包括<strong>动态解密</strong>、<strong>虚假控制流</strong>、<strong>字符串加密</strong>和<strong>死代码注入</strong>等技术，
+        有效防止反编译和代码分析。
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<section class="requirements" id="requirements">
+  <div class="requirements-content">
+    <h2 class="section-title">环境要求</h2>
+    <ul class="requirements-list">
+      <li>Java 8 或更高版本</li>
+      <li>Zig 编译器 0.11.0（首次运行会自动下载）</li>
+      <li>足够的磁盘空间用于编译缓存</li>
+    </ul>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <h2 class="section-title">联系我们</h2>
+  <p>有任何问题或建议？欢迎通过以下方式联系我们</p>
+  <div class="contact-links">
+    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+    <a href="https://qm.qq.com/q/hZoerSpkFG" target="_blank">QQ 群</a>
+    <a href="mailto:StarlightDevelopmentTeam@outlook.com">电子邮件</a>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Starlight Development Team. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="../index.html">首页</a>
+    <a href="starlight-verification.html">Starlight Verification</a>
+    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+const createParticle = () => {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.top = '100%';
+  p.style.animationDelay = Math.random() * 5 + 's';
+  const size = Math.random() * 4 + 2;
+  p.style.width = p.style.height = size + 'px';
+  document.getElementById('particles').appendChild(p);
+  setTimeout(() => p.remove(), 20000);
+};
+setInterval(createParticle, 300);
+for (let i = 0; i < 5; i++) setTimeout(createParticle, i * 200);
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      anime({
+        targets: entry.target,
+        opacity: [0, 1],
+        translateY: [30, 0],
+        delay: i * 100,
+        duration: 800,
+        easing: 'easeOutQuad'
+      });
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.feature-card').forEach(card => io.observe(card));
+</script>
+</body>
+</html>
