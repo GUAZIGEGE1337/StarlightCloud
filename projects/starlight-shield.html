@@ -799,12 +799,23 @@ footer {
     jvalue clocal1; memset(&clocal1, 0, sizeof(jvalue));
     
     {
-        int vec_a_0[6];
-        for (int kex3_1 = 0; kex3_1 < 6; kex3_1++) {
-            vec_a_0[kex3_1] = kex3_1 * 4;
-        }
-        for (int ivar_2 = 0; ivar_2 < 5; ivar_2++) {
-            vec_a_0[ivar_2] ^= vec_a_0[ivar_2 + 1];
+        int infovar2_0 = 36;
+        switch (infovar2_0 % 4) {
+            case 0:
+                infovar2_0 ^= 0xDF;
+                break;
+            case 1:
+                infovar2_0 ^= 0x7F;
+                break;
+            case 2:
+                infovar2_0 ^= 0x82;
+                break;
+            case 3:
+                infovar2_0 ^= 0xEC;
+                break;
+            default:
+                infovar2_0 = ~infovar2_0;
+                break;
         }
     }
     jvalue temp0; memset(&temp0, 0, sizeof(jvalue));
@@ -815,91 +826,80 @@ footer {
     cstack0.l = clocal0.l;
     cstack0.l = (*env)->GetObjectField(env, cstack0.l, c_0_(env)->id_2);
     if ((*env)->ExceptionCheck(env)) { return; }
-    {
-        int uu3_3 = 82;
-        uu3_3 += 87;
-        uu3_3 *= 4;
-        uu3_3 ^= 0xC;
-        uu3_3 = (uu3_3 << 2) | (uu3_3 >> 30);
-        uu3_3 %= 33;
-    }
     cstack1.l = clocal0.l;
+    {
+        volatile int _switch_var_0_0 = 53;
+        switch (_switch_var_0_0 % 5) {
+            case 0: _switch_var_0_0 ^= 0x18; break;
+            case 1: _switch_var_0_0 ^= 0x58; break;
+            case 2: _switch_var_0_0 ^= 0x8B; break;
+            case 3: _switch_var_0_0 ^= 0x23; break;
+            case 4: _switch_var_0_0 ^= 0x9C; break;
+            default: break;
+        }
+        volatile unsigned int _bits_0_1 = 49U;
+        _bits_0_1 = ((_bits_0_1 & 0x55555555) << 1) | ((_bits_0_1 & 0xAAAAAAAA) >> 1);
+        _bits_0_1 = ((_bits_0_1 & 0x33333333) << 2) | ((_bits_0_1 & 0xCCCCCCCC) >> 2);
+        volatile int _fib_n_0_2 = 7;
+        volatile int _fib_a_0_2 = 0, _fib_b_0_2 = 1;
+        for (volatile int _i_0_2 = 2; _i_0_2 <= _fib_n_0_2; _i_0_2++) {
+            volatile int _fib_t_0_2 = _fib_a_0_2 + _fib_b_0_2;
+            {
+                volatile int _xor_chain_0 = 162;
+                _xor_chain_0 = (_xor_chain_0 << 6) | (_xor_chain_0 >> 26);
+                _xor_chain_0 ^= 461;
+            }
+            _fib_a_0_2 = _fib_b_0_2;
+            _fib_b_0_2 = _fib_t_0_2;
+        }
+        volatile int _fib_n_0_3 = 7;
+        volatile int _fib_a_0_3 = 0, _fib_b_0_3 = 1;
+        for (volatile int _i_0_3 = 2; _i_0_3 <= _fib_n_0_3; _i_0_3++) {
+            {
+                volatile int _xor_chain_1 = 64;
+                _xor_chain_1 = (_xor_chain_1 << 5) | (_xor_chain_1 >> 27);
+                _xor_chain_1 ^= 318;
+            }
+            volatile int _fib_t_0_3 = _fib_a_0_3 + _fib_b_0_3;
+            _fib_a_0_3 = _fib_b_0_3;
+            _fib_b_0_3 = _fib_t_0_3;
+        }
+    }
     cstack1.l = (*env)->GetObjectField(env, cstack1.l, c_0_(env)->id_0);
     if ((*env)->ExceptionCheck(env)) { return; }
     cstack2.i = clocal1.i;
     cstack1.l = (*env)->CallObjectMethod(env, cstack1.l, c_7_(env)->method_0, cstack2.i);
-    {
-        struct { volatile int x; volatile int y; } _s_0_0 = {85, 9};
-        _s_0_0.x ^= _s_0_0.y;
-        _s_0_0.y = _s_0_0.x ^ _s_0_0.y;
-        _s_0_0.x ^= _s_0_0.y;
-        volatile int _fib_n_0_1 = 6;
-            {
-                volatile int _xor_chain_0 = 18;
-                _xor_chain_0 = (_xor_chain_0 << 2) | (_xor_chain_0 >> 30);
-                _xor_chain_0 ^= 753;
-            }
-        volatile int _fib_a_0_1 = 0, _fib_b_0_1 = 1;
-        for (volatile int _i_0_1 = 2; _i_0_1 <= _fib_n_0_1; _i_0_1++) {
-            {
-                volatile int _xor_chain_1 = 181;
-                _xor_chain_1 = (_xor_chain_1 << 2) | (_xor_chain_1 >> 30);
-                _xor_chain_1 ^= 76;
-            }
-            volatile int _fib_t_0_1 = _fib_a_0_1 + _fib_b_0_1;
-            _fib_a_0_1 = _fib_b_0_1;
-            _fib_b_0_1 = _fib_t_0_1;
-        }
-    }
     if ((*env)->ExceptionCheck(env)) { return; }
     if (cstack1.l != NULL && !(*env)->IsInstanceOf(env, cstack1.l, c_8_(env)->clazz)){throw_exception(env, "java/lang/ClassCastException", "cannot cast to ", -1); (*env)->ThrowNew(env, c_9_(env)->clazz, "");}
     if ((*env)->ExceptionCheck(env)) { return; }
-    {
-        volatile int _arr_1_0[] = {63, 31, 63, 40};
-        volatile int _arr_sum_1_0 = 0;
-        for (volatile int _i_1_0 = 0; _i_1_0 < 4; _i_1_0++) {
-            {
-                volatile int _xor_chain_2 = 211;
-                _xor_chain_2 = (_xor_chain_2 << 5) | (_xor_chain_2 >> 27);
-                _xor_chain_2 ^= 240;
-            }
-            _arr_sum_1_0 ^= _arr_1_0[_i_1_0];
-        }
-        volatile int _comp_a_1_1_a = 84;
-        volatile int _comp_b_1_1_a = 74;
-        volatile int _comp_c_1_1_a = _comp_a_1_1_a ^ _comp_b_1_1_a;
-        _comp_c_1_1_a = (_comp_c_1_1_a << 5) | (_comp_c_1_1_a >> 27);
-        _comp_c_1_1_a *= 0x9E3779B9;
-    {
-        int writevar_4 = 75;
-        writevar_4 += 66;
-        writevar_4 *= 5;
-        writevar_4 ^= 0x2C;
-        writevar_4 = (writevar_4 << 2) | (writevar_4 >> 30);
-        writevar_4 %= 44;
-    }
-        volatile int _loop_var_1_1_b = 23;
-        for (volatile int _i_1_1_b = 0; _i_1_1_b < 2; _i_1_1_b++) {
-            {
-                volatile int _xor_chain_3 = 22;
-                _xor_chain_3 = (_xor_chain_3 << 2) | (_xor_chain_3 >> 30);
-                _xor_chain_3 ^= 46;
-            }
-            _loop_var_1_1_b = (_loop_var_1_1_b * 31 + 17) ^ _i_1_1_b;
-        }
-        volatile int _comp_a_1_2_a = 72;
-        volatile int _comp_b_1_2_a = 57;
-        volatile int _comp_c_1_2_a = _comp_a_1_2_a ^ _comp_b_1_2_a;
-        _comp_c_1_2_a = (_comp_c_1_2_a << 5) | (_comp_c_1_2_a >> 27);
-        _comp_c_1_2_a *= 0x9E3779B9;
-        volatile int _loop_var_1_2_b = 1;
-        for (volatile int _i_1_2_b = 0; _i_1_2_b < 6; _i_1_2_b++) {
-            _loop_var_1_2_b = (_loop_var_1_2_b * 31 + 17) ^ _i_1_2_b;
-        }
-    }
     (*env)->CallVoidMethod(env, cstack0.l, c_3_(env)->method_1, cstack1.l);
     if ((*env)->ExceptionCheck(env)) { return; }
     return;
+    {
+        volatile int _loop_var_1_0 = 50;
+        for (volatile int _i_1_0 = 0; _i_1_0 < 2; _i_1_0++) {
+            _loop_var_1_0 = (_loop_var_1_0 * 31 + 17) ^ _i_1_0;
+        }
+        volatile unsigned int _bits_1_1 = 28U;
+        _bits_1_1 = ((_bits_1_1 & 0x55555555) << 1) | ((_bits_1_1 & 0xAAAAAAAA) >> 1);
+        _bits_1_1 = ((_bits_1_1 & 0x33333333) << 2) | ((_bits_1_1 & 0xCCCCCCCC) >> 2);
+        struct { volatile int x; volatile int y; } _s_1_2 = {33, 17};
+        _s_1_2.x ^= _s_1_2.y;
+        _s_1_2.y = _s_1_2.x ^ _s_1_2.y;
+        _s_1_2.x ^= _s_1_2.y;
+        volatile int _fib_n_1_3 = 7;
+        volatile int _fib_a_1_3 = 0, _fib_b_1_3 = 1;
+        for (volatile int _i_1_3 = 2; _i_1_3 <= _fib_n_1_3; _i_1_3++) {
+            volatile int _fib_t_1_3 = _fib_a_1_3 + _fib_b_1_3;
+            {
+                volatile int _xor_chain_2 = 178;
+                _xor_chain_2 = (_xor_chain_2 << 7) | (_xor_chain_2 >> 25);
+                _xor_chain_2 ^= 669;
+            }
+            _fib_a_1_3 = _fib_b_1_3;
+            _fib_b_1_3 = _fib_t_1_3;
+        }
+    }
         return ;
 }</code>
           </div>
