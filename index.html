@@ -774,6 +774,29 @@ nav.scrolled {
   max-height: 90vh;
   border-radius: 16px;
   box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-content img.loaded {
+  opacity: 1;
+}
+
+.modal-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: var(--accent-blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 .modal-close {
@@ -1482,6 +1505,7 @@ footer {
 <div class="modal-overlay" id="imageModal">
   <div class="modal-content">
     <div class="modal-close" onclick="closeModal()">&times;</div>
+    <div class="modal-loading" id="modalLoading"></div>
     <img src="" alt="" id="modalImage">
     <div class="modal-title" id="modalTitle"></div>
   </div>
@@ -1762,6 +1786,7 @@ function openModal(imageSrc, title) {
   const modal = document.getElementById('imageModal');
   const modalImg = document.getElementById('modalImage');
   const modalTitle = document.getElementById('modalTitle');
+  const modalLoading = document.getElementById('modalLoading');
 
   // Get the base path for GitHub Pages compatibility
   const basePath = window.location.pathname.replace(/\/[^\/]*$/, '/');
@@ -1769,16 +1794,34 @@ function openModal(imageSrc, title) {
   const encodedSrc = imageSrc.split('/').map(encodeURIComponent).join('/');
   const fullPath = basePath + encodedSrc;
 
-  modalImg.src = fullPath;
+  // Reset image state
+  modalImg.classList.remove('loaded');
+  modalImg.src = '';
+  modalLoading.style.display = 'block';
   modalImg.alt = title;
   modalTitle.textContent = title;
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
+
+  // Load new image
+  const img = new Image();
+  img.onload = () => {
+    modalImg.src = fullPath;
+    modalLoading.style.display = 'none';
+    modalImg.classList.add('loaded');
+  };
+  img.onerror = () => {
+    modalLoading.style.display = 'none';
+    modalTitle.textContent = title + ' (图片加载失败)';
+  };
+  img.src = fullPath;
 }
 
 function closeModal() {
   const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage');
   modal.classList.remove('active');
+  modalImg.classList.remove('loaded');
   document.body.style.overflow = '';
 }
 
