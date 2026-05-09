@@ -1109,76 +1109,14 @@ footer {
   }
 }
 
-/* Leaders Modal */
-.leaders-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
+/* Leaders Section */
+.leaders-section {
+  margin-top: 4rem;
+  padding-top: 4rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
 }
 
-.leaders-modal-overlay.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.leaders-modal {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 24px;
-  max-width: 960px;
-  width: 90vw;
-  max-height: 85vh;
-  overflow-y: auto;
-  padding: 3rem;
-  position: relative;
-  transform: scale(0.8);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.leaders-modal-overlay.active .leaders-modal {
-  transform: scale(1);
-}
-
-.leaders-modal::-webkit-scrollbar { display: none; }
-.leaders-modal { scrollbar-width: none; -ms-overflow-style: none; }
-
-.leaders-modal-close {
-  position: absolute;
-  top: 1.2rem;
-  right: 1.5rem;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #fff;
-  font-size: 1.4rem;
-  transition: all 0.3s ease;
-  z-index: 1;
-}
-
-.leaders-modal-close:hover {
-  background: rgba(255,255,255,0.2);
-  transform: rotate(90deg);
-}
-
-.leaders-modal-title {
+.leaders-section-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 2.5rem;
@@ -1539,7 +1477,6 @@ footer {
       <h2>Starlight Bespoke Team</h2>
       <p>隶属于 Starlight Development Team 分支，深耕 Minecraft 客户端。高阶定制。以极致精工打磨专属架构、美学设计与功能内核，于方寸像素之间，塑造独一无二的专属客户端体验。</p>
       <p>从概念到成品，我们提供全方位的定制服务，确保每个细节都符合您的独特需求。</p>
-      <a href="#contact" class="bespoke-view-team">查看团队</a>
       <div class="bespoke-features">
         <div class="bespoke-feature-item">
           <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
@@ -1566,6 +1503,27 @@ footer {
           <h3>Bespoke</h3>
           <p>高阶定制 · 独一无二</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Team -->
+  <div class="leaders-section reveal">
+    <h2 class="leaders-section-title">核心团队</h2>
+    <div class="leaders-grid">
+      <div class="leader-card">
+        <div class="leader-role">主要领导者</div>
+        <img class="leader-avatar" src="assets/images/GUAZIGEGE.jpg" alt="瓜子鸽鸽">
+        <div class="leader-name">瓜子鸽鸽</div>
+        <div class="leader-qq">QQ: <span>3488388541</span></div>
+        <p class="leader-bio">Starlight Development Team 创始人与核心领导者，统筹团队整体发展方向与战略规划。在 Minecraft 安全生态领域拥有深厚的技术积累与前瞻视野，主导了 Starlight Shield、Starlight Verification 等核心项目的架构设计与技术决策，致力于为社区打造专业、可靠的安全解决方案。</p>
+      </div>
+      <div class="leader-card">
+        <div class="leader-role">主要开发者</div>
+        <img class="leader-avatar" src="assets/images/BC_zxy.jpg" alt="BC_zxy">
+        <div class="leader-name">BC_zxy</div>
+        <div class="leader-qq">QQ: <span>2390748112</span></div>
+        <p class="leader-bio">Starlight Development Team 核心开发者，深耕 Java 客户端开发与反作弊绕过领域，曾隶属于 Astronaut Development Team、Frog Development Team 等知名项目开发组，积累了丰富的客户端从零到成型全流程实战经验。在 2B2T 社区开发中屡次突破技术边界，对反作弊系统有着深刻的理解与独到的绕过思路。始终追求极致的客户端用户体验，以匠心精神打磨每一个交互细节与性能表现。</p>
       </div>
     </div>
   </div>
@@ -1894,7 +1852,6 @@ footer {
       <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
       <a href="https://qm.qq.com/q/hZoerSpkFG" target="_blank">QQ 群</a>
       <a href="mailto:StarlightDevelopmentTeam@outlook.com">电子邮件</a>
-      <a href="javascript:void(0)" onclick="openLeadersModal()">主要领导者</a>
       <a href="javascript:void(0)" onclick="openBilibiliModal()">B站</a>
     </div>
   </div>
@@ -1907,30 +1864,6 @@ footer {
     <div class="modal-loading" id="modalLoading"></div>
     <img src="" alt="" id="modalImage">
     <div class="modal-title" id="modalTitle"></div>
-  </div>
-</div>
-
-<!-- Leaders Modal -->
-<div class="leaders-modal-overlay" id="leadersModal">
-  <div class="leaders-modal">
-    <div class="leaders-modal-close" onclick="closeLeadersModal()">&times;</div>
-    <h2 class="leaders-modal-title">核心团队</h2>
-    <div class="leaders-grid">
-      <div class="leader-card">
-        <div class="leader-role">主要领导者</div>
-        <img class="leader-avatar" src="assets/images/GUAZIGEGE.jpg" alt="瓜子鸽鸽">
-        <div class="leader-name">瓜子鸽鸽</div>
-        <div class="leader-qq">QQ: <span>3488388541</span></div>
-        <p class="leader-bio">Starlight Development Team 创始人与核心领导者，统筹团队整体发展方向与战略规划。在 Minecraft 安全生态领域拥有深厚的技术积累与前瞻视野，主导了 Starlight Shield、Starlight Verification 等核心项目的架构设计与技术决策，致力于为社区打造专业、可靠的安全解决方案。</p>
-      </div>
-      <div class="leader-card">
-        <div class="leader-role">主要开发者</div>
-        <img class="leader-avatar" src="assets/images/BC_zxy.jpg" alt="BC_zxy">
-        <div class="leader-name">BC_zxy</div>
-        <div class="leader-qq">QQ: <span>2390748112</span></div>
-        <p class="leader-bio">Starlight Development Team 核心开发者，深耕 Java 客户端开发与反作弊绕过领域，曾隶属于 Astronaut Development Team、Frog Development Team 等知名项目开发组，积累了丰富的客户端从零到成型全流程实战经验。在 2B2T 社区开发中屡次突破技术边界，对反作弊系统有着深刻的理解与独到的绕过思路。始终追求极致的客户端用户体验，以匠心精神打磨每一个交互细节与性能表现。</p>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -2281,28 +2214,7 @@ document.getElementById('imageModal').addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeModal();
-    closeLeadersModal();
     closeBilibiliModal();
-  }
-});
-
-// Leaders Modal Functions
-function openLeadersModal() {
-  const modal = document.getElementById('leadersModal');
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLeadersModal() {
-  const modal = document.getElementById('leadersModal');
-  modal.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-// Close leaders modal on background click
-document.getElementById('leadersModal').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('leadersModal')) {
-    closeLeadersModal();
   }
 });
 
