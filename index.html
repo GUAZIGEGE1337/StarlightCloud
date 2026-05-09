@@ -1177,7 +1177,7 @@ footer {
 
       <div class="project-item reveal has-image" onclick="openModal('assets/images/Astronaut Reborn.jpg', 'Astronaut-Reborn')">
         <div class="project-item-header">
-          <h3>Astronaut-Reborn</h3>
+          <h3>Astronaut Reborn</h3>
         </div>
         <p>Minecraft 客户端。</p>
         <div class="project-item-tags">
@@ -1235,7 +1235,7 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <h3>LuminClient</h3>
+          <h3>Lumin Client</h3>
         </div>
         <p>Minecraft 客户端。</p>
         <div class="project-item-tags">
@@ -1259,7 +1259,7 @@ footer {
 
       <div class="project-item reveal has-image" onclick="openModal('assets/images/Perish-Hyperion.png', 'Perish-Hyperion')">
         <div class="project-item-header">
-          <h3>Perish-Hyperion</h3>
+          <h3>Perish Hyperion</h3>
         </div>
         <p>Minecraft 客户端。</p>
         <div class="project-item-tags">
@@ -1271,7 +1271,7 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <h3>Hextech-nightly</h3>
+          <h3>Hextech Nightly</h3>
         </div>
         <p>Minecraft 客户端。</p>
         <div class="project-item-tags">
@@ -1397,7 +1397,7 @@ footer {
         <div class="service-card-header">
           <h3>服务端调试</h3>
         </div>
-        <p>专业的服务端问题诊断与修复，解决崩溃、卡顿、插件冲突等各种技术难题。</p>
+        <p>专业的服务端与客户端问题诊断与修复，解决崩溃、卡顿、插件冲突等各种技术难题。</p>
       </div>
 
       <div class="service-card reveal">
@@ -1713,8 +1713,14 @@ function openModal(imageSrc, title) {
   const modal = document.getElementById('imageModal');
   const modalImg = document.getElementById('modalImage');
   const modalTitle = document.getElementById('modalTitle');
-  
-  modalImg.src = imageSrc;
+
+  // Get the base path for GitHub Pages compatibility
+  const basePath = window.location.pathname.replace(/\/[^\/]*$/, '/');
+  // Encode the image path to handle spaces and special characters
+  const encodedSrc = imageSrc.split('/').map(encodeURIComponent).join('/');
+  const fullPath = basePath + encodedSrc;
+
+  modalImg.src = fullPath;
   modalImg.alt = title;
   modalTitle.textContent = title;
   modal.classList.add('active');
