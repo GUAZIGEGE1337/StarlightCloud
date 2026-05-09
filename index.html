@@ -1237,6 +1237,198 @@ footer {
   }
 }
 
+/* GitHub Modal */
+.github-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.github-modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.github-modal {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  max-width: 960px;
+  width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 3rem;
+  position: relative;
+  transform: scale(0.8);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.github-modal::-webkit-scrollbar { display: none; }
+
+.github-modal-overlay.active .github-modal {
+  transform: scale(1);
+}
+
+.github-modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.github-modal-close:hover {
+  background: rgba(255,255,255,0.2);
+  transform: rotate(90deg);
+}
+
+.github-modal-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2.5rem;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+}
+
+.github-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+.github-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.github-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2dba4e, var(--accent-blue));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.github-card:hover::before {
+  transform: scaleX(1);
+}
+
+.github-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.github-role {
+  font-size: 0.85rem;
+  padding: 0.3rem 1rem;
+  background: linear-gradient(135deg, rgba(45, 186, 78, 0.2), rgba(74, 144, 226, 0.2));
+  border: 1px solid rgba(45, 186, 78, 0.3);
+  border-radius: 20px;
+  color: #2dba4e;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.github-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.5rem;
+  border: 3px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 30px rgba(45, 186, 78, 0.3);
+  transition: all 0.4s ease;
+  display: block;
+}
+
+.github-card:hover .github-avatar {
+  box-shadow: 0 0 50px rgba(45, 186, 78, 0.5), 0 0 80px rgba(74, 144, 226, 0.2);
+  transform: scale(1.05);
+}
+
+.github-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.github-link {
+  display: inline-block;
+  padding: 0.6rem 2rem;
+  background: linear-gradient(135deg, #2dba4e, #3ecf6a);
+  border-radius: 25px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(45, 186, 78, 0.3);
+}
+
+.github-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(45, 186, 78, 0.5);
+}
+
+@media (max-width: 768px) {
+  .github-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .github-modal {
+    padding: 2rem 1.5rem;
+  }
+  .github-avatar {
+    width: 120px;
+    height: 120px;
+  }
+  .github-modal-title {
+    font-size: 1.5rem;
+  }
+}
+
 /* Bilibili Modal */
 .bili-modal-overlay {
   position: fixed;
@@ -1849,7 +2041,7 @@ footer {
     <h2 class="section-title">联系我们</h2>
     <p>有任何问题或需求？欢迎通过以下方式联系我们</p>
     <div class="contact-links">
-      <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+      <a href="javascript:void(0)" onclick="openGithubModal()">GitHub</a>
       <a href="https://qm.qq.com/q/hZoerSpkFG" target="_blank">QQ 群</a>
       <a href="mailto:StarlightDevelopmentTeam@outlook.com">电子邮件</a>
       <a href="javascript:void(0)" onclick="openBilibiliModal()">B站</a>
@@ -1864,6 +2056,28 @@ footer {
     <div class="modal-loading" id="modalLoading"></div>
     <img src="" alt="" id="modalImage">
     <div class="modal-title" id="modalTitle"></div>
+  </div>
+</div>
+
+<!-- GitHub Modal -->
+<div class="github-modal-overlay" id="githubModal">
+  <div class="github-modal">
+    <div class="github-modal-close" onclick="closeGithubModal()">&times;</div>
+    <h2 class="github-modal-title">GitHub</h2>
+    <div class="github-grid">
+      <div class="github-card">
+        <div class="github-role">主要领导者</div>
+        <img class="github-avatar" src="assets/images/GUAZIGEGE.jpg" alt="瓜子鸽鸽">
+        <div class="github-name">GUAZIGEGE1337</div>
+        <a class="github-link" href="https://github.com/GUAZIGEGE1337" target="_blank">访问主页</a>
+      </div>
+      <div class="github-card">
+        <div class="github-role">主要开发者</div>
+        <img class="github-avatar" src="assets/images/BC_zxy.jpg" alt="BC_zxy">
+        <div class="github-name">BCzxy233</div>
+        <a class="github-link" href="https://github.com/BCzxy233" target="_blank">访问主页</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2214,7 +2428,28 @@ document.getElementById('imageModal').addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeModal();
+    closeGithubModal();
     closeBilibiliModal();
+  }
+});
+
+// GitHub Modal Functions
+function openGithubModal() {
+  const modal = document.getElementById('githubModal');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGithubModal() {
+  const modal = document.getElementById('githubModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close github modal on background click
+document.getElementById('githubModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('githubModal')) {
+    closeGithubModal();
   }
 });
 
