@@ -322,6 +322,20 @@ nav.scrolled {
 }
 
 /* Bespoke Team Section */
+.bespoke-view-team {
+  display: inline-block;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.85rem;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.bespoke-view-team:hover {
+  color: rgba(255,255,255,0.7);
+}
+
 .bespoke-section {
   padding: 6rem 5%;
   position: relative;
@@ -1094,6 +1108,388 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* Leaders Modal */
+.leaders-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.leaders-modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.leaders-modal {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  max-width: 960px;
+  width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 3rem;
+  position: relative;
+  transform: scale(0.8);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.leaders-modal-overlay.active .leaders-modal {
+  transform: scale(1);
+}
+
+.leaders-modal::-webkit-scrollbar { display: none; }
+.leaders-modal { scrollbar-width: none; -ms-overflow-style: none; }
+
+.leaders-modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.leaders-modal-close:hover {
+  background: rgba(255,255,255,0.2);
+  transform: rotate(90deg);
+}
+
+.leaders-modal-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2.5rem;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+}
+
+.leaders-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+.leader-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.leader-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.leader-card:hover::before {
+  transform: scaleX(1);
+}
+
+.leader-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.leader-role {
+  font-size: 0.85rem;
+  padding: 0.3rem 1rem;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(255, 126, 185, 0.2));
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  border-radius: 20px;
+  color: var(--accent-blue);
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.leader-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.5rem;
+  border: 3px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 30px rgba(74, 144, 226, 0.3);
+  transition: all 0.4s ease;
+  display: block;
+}
+
+.leader-card:hover .leader-avatar {
+  box-shadow: 0 0 50px rgba(74, 144, 226, 0.5), 0 0 80px rgba(255, 126, 185, 0.2);
+  transform: scale(1.05);
+}
+
+.leader-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.leader-qq {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 1rem;
+}
+
+.leader-qq span {
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.leader-bio {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .leaders-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .leaders-modal {
+    padding: 2rem 1.5rem;
+  }
+  .leader-avatar {
+    width: 120px;
+    height: 120px;
+  }
+  .leaders-modal-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Bilibili Modal */
+.bili-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.bili-modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.bili-modal {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 24px;
+  max-width: 960px;
+  width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 3rem;
+  position: relative;
+  transform: scale(0.8);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bili-modal::-webkit-scrollbar { display: none; }
+
+.bili-modal-overlay.active .bili-modal {
+  transform: scale(1);
+}
+
+.bili-modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.4rem;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.bili-modal-close:hover {
+  background: rgba(255,255,255,0.2);
+  transform: rotate(90deg);
+}
+
+.bili-modal-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2.5rem;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+}
+
+.bili-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+}
+
+.bili-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.bili-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #fb7299, var(--accent-blue));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.bili-card:hover::before {
+  transform: scaleX(1);
+}
+
+.bili-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.bili-role {
+  font-size: 0.85rem;
+  padding: 0.3rem 1rem;
+  background: linear-gradient(135deg, rgba(251, 114, 153, 0.2), rgba(74, 144, 226, 0.2));
+  border: 1px solid rgba(251, 114, 153, 0.3);
+  border-radius: 20px;
+  color: #fb7299;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.bili-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.5rem;
+  border: 3px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 30px rgba(251, 114, 153, 0.3);
+  transition: all 0.4s ease;
+  display: block;
+}
+
+.bili-card:hover .bili-avatar {
+  box-shadow: 0 0 50px rgba(251, 114, 153, 0.5), 0 0 80px rgba(74, 144, 226, 0.2);
+  transform: scale(1.05);
+}
+
+.bili-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.bili-link {
+  display: inline-block;
+  padding: 0.6rem 2rem;
+  background: linear-gradient(135deg, #fb7299, #ff9ab5);
+  border-radius: 25px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(251, 114, 153, 0.3);
+}
+
+.bili-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(251, 114, 153, 0.5);
+}
+
+@media (max-width: 768px) {
+  .bili-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .bili-modal {
+    padding: 2rem 1.5rem;
+  }
+  .bili-avatar {
+    width: 120px;
+    height: 120px;
+  }
+  .bili-modal-title {
+    font-size: 1.5rem;
+  }
+}
 </style>
 </head>
 <body>
@@ -1143,6 +1539,7 @@ footer {
       <h2>Starlight Bespoke Team</h2>
       <p>隶属于 Starlight Development Team 分支，深耕 Minecraft 客户端。高阶定制。以极致精工打磨专属架构、美学设计与功能内核，于方寸像素之间，塑造独一无二的专属客户端体验。</p>
       <p>从概念到成品，我们提供全方位的定制服务，确保每个细节都符合您的独特需求。</p>
+      <a href="#contact" class="bespoke-view-team">查看团队</a>
       <div class="bespoke-features">
         <div class="bespoke-feature-item">
           <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
@@ -1258,7 +1655,7 @@ footer {
         </div>
       </div>
 
-      <div class="project-item reveal has-image" onclick="openModal('assets/images/Frog.jpg', 'Frog')">
+      <div class="project-item reveal has-image" onclick="openModal('assets/images/Frog.png', 'Frog')">
         <div class="project-item-header">
           <h3>Frog</h3>
         </div>
@@ -1421,7 +1818,7 @@ footer {
   <div class="ambient-glow" style="width:400px;height:400px;background:radial-gradient(circle, var(--accent-cyan), transparent 70%);bottom:10%;left:-10%;animation-delay:-12s;"></div>
   <div class="services-container">
     <h2 class="section-title reveal">我们的服务</h2>
-    <p class="section-subtitle reveal">有任何关于 Minecraft 的需求，都可找我们 — 以上均为包远程服务</p>
+    <p class="section-subtitle reveal">有任何关于 Minecraft 的需求，都可找我们 — 以下均支持远程服务</p>
     <div class="services-grid">
       <div class="service-card reveal">
         <div class="service-card-header">
@@ -1497,6 +1894,8 @@ footer {
       <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
       <a href="https://qm.qq.com/q/hZoerSpkFG" target="_blank">QQ 群</a>
       <a href="mailto:StarlightDevelopmentTeam@outlook.com">电子邮件</a>
+      <a href="javascript:void(0)" onclick="openLeadersModal()">主要领导者</a>
+      <a href="javascript:void(0)" onclick="openBilibiliModal()">B站</a>
     </div>
   </div>
 </section>
@@ -1511,6 +1910,52 @@ footer {
   </div>
 </div>
 
+<!-- Leaders Modal -->
+<div class="leaders-modal-overlay" id="leadersModal">
+  <div class="leaders-modal">
+    <div class="leaders-modal-close" onclick="closeLeadersModal()">&times;</div>
+    <h2 class="leaders-modal-title">核心团队</h2>
+    <div class="leaders-grid">
+      <div class="leader-card">
+        <div class="leader-role">主要领导者</div>
+        <img class="leader-avatar" src="assets/images/GUAZIGEGE.jpg" alt="瓜子鸽鸽">
+        <div class="leader-name">瓜子鸽鸽</div>
+        <div class="leader-qq">QQ: <span>3488388541</span></div>
+        <p class="leader-bio">Starlight Development Team 创始人与核心领导者，统筹团队整体发展方向与战略规划。在 Minecraft 安全生态领域拥有深厚的技术积累与前瞻视野，主导了 Starlight Shield、Starlight Verification 等核心项目的架构设计与技术决策，致力于为社区打造专业、可靠的安全解决方案。</p>
+      </div>
+      <div class="leader-card">
+        <div class="leader-role">主要开发者</div>
+        <img class="leader-avatar" src="assets/images/BC_zxy.jpg" alt="BC_zxy">
+        <div class="leader-name">BC_zxy</div>
+        <div class="leader-qq">QQ: <span>2390748112</span></div>
+        <p class="leader-bio">Starlight Development Team 核心开发者，深耕 Java 客户端开发与反作弊绕过领域，曾隶属于 Astronaut Development Team、Frog Development Team 等知名项目开发组，积累了丰富的客户端从零到成型全流程实战经验。在 2B2T 社区开发中屡次突破技术边界，对反作弊系统有着深刻的理解与独到的绕过思路。始终追求极致的客户端用户体验，以匠心精神打磨每一个交互细节与性能表现。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bilibili Modal -->
+<div class="bili-modal-overlay" id="biliModal">
+  <div class="bili-modal">
+    <div class="bili-modal-close" onclick="closeBilibiliModal()">&times;</div>
+    <h2 class="bili-modal-title">哔哩哔哩</h2>
+    <div class="bili-grid">
+      <div class="bili-card">
+        <div class="bili-role">主要领导者</div>
+        <img class="bili-avatar" src="assets/images/GUAZIGEGE.jpg" alt="瓜子鸽鸽">
+        <div class="bili-name">瓜子鸽鸽</div>
+        <a class="bili-link" href="https://space.bilibili.com/3546563110505039?spm_id_from=333.337.0.0" target="_blank">访问主页</a>
+      </div>
+      <div class="bili-card">
+        <div class="bili-role">主要开发者</div>
+        <img class="bili-avatar" src="assets/images/BC_zxy.jpg" alt="BC_zxy">
+        <div class="bili-name">BC_zxy</div>
+        <a class="bili-link" href="https://space.bilibili.com/1967448023?spm_id_from=333.1387.0.0" target="_blank">访问主页</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="footer-content">
     <div class="footer-logo">
@@ -1522,7 +1967,7 @@ footer {
       <a href="projects/starlight-verification.html">Starlight Verification</a>
       <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
     </div>
-    <p class="footer-copy">&copy; 2025 Starlight Development Team. All rights reserved.</p>
+    <p class="footer-copy">&copy; 2026 Starlight Development Team. All rights reserved.</p>
   </div>
 </footer>
 
@@ -1836,6 +2281,48 @@ document.getElementById('imageModal').addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeModal();
+    closeLeadersModal();
+    closeBilibiliModal();
+  }
+});
+
+// Leaders Modal Functions
+function openLeadersModal() {
+  const modal = document.getElementById('leadersModal');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLeadersModal() {
+  const modal = document.getElementById('leadersModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close leaders modal on background click
+document.getElementById('leadersModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('leadersModal')) {
+    closeLeadersModal();
+  }
+});
+
+// Bilibili Modal Functions
+function openBilibiliModal() {
+  const modal = document.getElementById('biliModal');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBilibiliModal() {
+  const modal = document.getElementById('biliModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close bilibili modal on background click
+document.getElementById('biliModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('biliModal')) {
+    closeBilibiliModal();
   }
 });
 </script>
