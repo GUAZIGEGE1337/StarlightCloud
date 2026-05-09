@@ -1220,32 +1220,6 @@ footer {
   line-height: 1.8;
 }
 
-.leader-links {
-  display: flex;
-  gap: 0.8rem;
-  justify-content: center;
-  margin-top: 1.2rem;
-}
-
-.leader-link {
-  padding: 0.4rem 1.2rem;
-  background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(255, 126, 185, 0.2));
-  border: 1px solid rgba(74, 144, 226, 0.3);
-  border-radius: 20px;
-  color: var(--accent-blue);
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.leader-link:hover {
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
-  color: #fff;
-  border-color: transparent;
-  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
-}
-
 @media (max-width: 768px) {
   .leaders-grid {
     grid-template-columns: 1fr;
@@ -1345,8 +1319,8 @@ footer {
 
 .github-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }
 
 .github-card {
@@ -1417,7 +1391,15 @@ footer {
   font-size: 1.5rem;
   font-weight: 700;
   color: #fff;
+  margin-bottom: 0.8rem;
+}
+
+.github-bio {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
   margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
 }
 
 .github-link {
@@ -1436,6 +1418,13 @@ footer {
 .github-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(45, 186, 78, 0.5);
+}
+
+@media (max-width: 1024px) {
+  .github-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1537,8 +1526,8 @@ footer {
 
 .bili-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }
 
 .bili-card {
@@ -1628,6 +1617,13 @@ footer {
 .bili-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(251, 114, 153, 0.5);
+}
+
+@media (max-width: 1024px) {
+  .bili-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1742,17 +1738,6 @@ footer {
         <div class="leader-name">BC_zxy</div>
         <div class="leader-qq">QQ: <span>2390748112</span></div>
         <p class="leader-bio">Starlight Development Team 核心开发者，深耕 Java 客户端开发与反作弊绕过领域，曾隶属于 Astronaut Development Team、Frog Development Team 等知名项目开发组，积累了丰富的客户端从零到成型全流程实战经验。在 2B2T 社区开发中屡次突破技术边界，对反作弊系统有着深刻的理解与独到的绕过思路。始终追求极致的客户端用户体验，以匠心精神打磨每一个交互细节与性能表现。</p>
-      </div>
-      <div class="leader-card">
-        <div class="leader-role">服务端插件开发者</div>
-        <img class="leader-avatar" src="assets/images/E-e-Z.jpg" alt="神秘笑脸人">
-        <div class="leader-name">神秘笑脸人</div>
-        <div class="leader-qq">B站 / GitHub</div>
-        <p class="leader-bio">全中国顶尖服务端插件开发者，精通 Minecraft 服务端架构与插件开发，在服务端性能优化、反作弊插件、游戏机制扩展等领域拥有卓越的技术实力。其开发的插件以稳定性高、功能强大、代码优雅著称，深受国内外服主与开发者社区的高度认可。为 Starlight Development Team 提供强大的服务端技术支持与解决方案。</p>
-        <div class="leader-links">
-          <a href="https://space.bilibili.com/1610165699" target="_blank" class="leader-link">B站</a>
-          <a href="https://github.com/E-e-Z" target="_blank" class="leader-link">GitHub</a>
-        </div>
       </div>
     </div>
   </div>
@@ -2114,6 +2099,13 @@ footer {
         <div class="github-name">BCzxy233</div>
         <a class="github-link" href="https://github.com/BCzxy233" target="_blank">访问主页</a>
       </div>
+      <div class="github-card">
+        <div class="github-role">神秘笑脸人</div>
+        <img class="github-avatar" src="assets/images/E-e-Z.jpg" alt="E-e-Z">
+        <div class="github-name">E-e-Z</div>
+        <p class="github-bio">全中国顶尖服务端插件开发者，深耕 Minecraft 服务端架构与插件生态，以精湛的技术实力为众多项目提供坚实的服务端支撑。</p>
+        <a class="github-link" href="https://github.com/E-e-Z" target="_blank">访问主页</a>
+      </div>
     </div>
   </div>
 </div>
@@ -2135,6 +2127,12 @@ footer {
         <img class="bili-avatar" src="assets/images/BC_zxy.jpg" alt="BC_zxy">
         <div class="bili-name">BC_zxy</div>
         <a class="bili-link" href="https://space.bilibili.com/1967448023?spm_id_from=333.1387.0.0" target="_blank">访问主页</a>
+      </div>
+      <div class="bili-card">
+        <div class="bili-role">神秘笑脸人</div>
+        <img class="bili-avatar" src="assets/images/E-e-Z.jpg" alt="E-e-Z">
+        <div class="bili-name">E-e-Z</div>
+        <a class="bili-link" href="https://space.bilibili.com/1610165699" target="_blank">访问主页</a>
       </div>
     </div>
   </div>
