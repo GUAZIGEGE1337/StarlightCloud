@@ -189,7 +189,8 @@ nav.scrolled {
   -webkit-text-fill-color: transparent;
   animation: textShine 5s linear infinite, fadeInUp 1s ease 0.2s both;
   letter-spacing: -2px;
-  line-height: 1.1;
+  line-height: 1.2;
+  padding-bottom: 0.2em;
 }
 
 @keyframes textShine {
@@ -620,24 +621,9 @@ nav.scrolled {
 }
 
 .service-card-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
   margin-bottom: 1rem;
   position: relative;
   z-index: 1;
-}
-
-.service-icon {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
 }
 
 .service-card h3 {
@@ -1146,7 +1132,6 @@ footer {
     <div class="projects-grid">
       <a href="projects/starlight-shield.html" class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">🛡️</div>
           <h3>Starlight Shield</h3>
         </div>
         <p>Java 代码保护工具，将字节码转换为原生代码，提供多层安全防护。</p>
@@ -1158,7 +1143,6 @@ footer {
 
       <a href="projects/starlight-verification.html" class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">🔐</div>
           <h3>Starlight Verification</h3>
         </div>
         <p>新一代安全验证解决方案，提供身份验证与授权管理服务。</p>
@@ -1192,7 +1176,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">🎯</div>
           <h3>Vertrc Client</h3>
         </div>
         <p>Minecraft 客户端开发与技术支持。</p>
@@ -1226,7 +1209,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">☀️</div>
           <h3>SunZheng Client</h3>
         </div>
         <p>Minecraft 客户端技术支持与定制服务。</p>
@@ -1238,7 +1220,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">💡</div>
           <h3>LuminClient</h3>
         </div>
         <p>Minecraft 客户端开发协助。</p>
@@ -1272,7 +1253,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">🔮</div>
           <h3>Hextech-nightly</h3>
         </div>
         <p>Minecraft 客户端开发协助。</p>
@@ -1284,7 +1264,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">🍵</div>
           <h3>OolongTea Client</h3>
         </div>
         <p>Minecraft 客户端开发协助与验证服务。</p>
@@ -1296,7 +1275,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">⭐</div>
           <h3>Orion Client</h3>
         </div>
         <p>Minecraft 客户端技术支持。</p>
@@ -1308,7 +1286,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">🌌</div>
           <h3>Starlight Drift</h3>
         </div>
         <p>Minecraft 客户端项目。</p>
@@ -1320,7 +1297,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">🎮</div>
           <h3>BC God</h3>
         </div>
         <p>Minecraft 相关项目开发协助。</p>
@@ -1332,7 +1308,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">🎮</div>
           <h3>BC God NextGen</h3>
         </div>
         <p>Minecraft 相关项目开发协助。</p>
@@ -1344,7 +1319,6 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <div class="project-item-icon">🔧</div>
           <h3>Epsilon</h3>
         </div>
         <p>Minecraft 客户端技术支持。</p>
@@ -1365,7 +1339,6 @@ footer {
     <div class="services-grid">
       <div class="service-card reveal">
         <div class="service-card-header">
-          <div class="service-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
           <h3>Mod 开发</h3>
         </div>
         <p>专业的 Minecraft Mod 开发服务，从功能设计到代码实现，打造符合您需求的专属 Mod。</p>
@@ -1373,7 +1346,6 @@ footer {
 
       <div class="service-card reveal">
         <div class="service-card-header">
-          <div class="service-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div>
           <h3>服务器插件定制</h3>
         </div>
         <p>定制化服务器插件开发，支持 Bukkit、Spigot、Paper 等主流服务端，满足您的独特玩法需求。</p>
@@ -1381,7 +1353,6 @@ footer {
 
       <div class="service-card reveal">
         <div class="service-card-header">
-          <div class="service-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div>
           <h3>客户端定制</h3>
         </div>
         <p>现有 Minecraft 客户端功能定制与改造，根据您的需求调整功能、界面与交互逻辑。</p>
@@ -1389,7 +1360,6 @@ footer {
 
       <div class="service-card reveal">
         <div class="service-card-header">
-          <div class="service-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
           <h3>材质包定制</h3>
         </div>
         <p>高品质材质包设计与制作，从 16x 到 512x 分辨率，打造独特的视觉风格。</p>
@@ -1397,7 +1367,6 @@ footer {
 
       <div class="service-card reveal">
         <div class="service-card-header">
-          <div class="service-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
           <h3>客户端参数销售</h3>
         </div>
         <p>提供各种客户端参数配置，优化游戏性能与视觉效果，提升游戏体验。</p>
@@ -1405,7 +1374,6 @@ footer {
 
       <div class="service-card reveal">
         <div class="service-card-header">
-          <div class="service-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
           <h3>MC 服务器搭建</h3>
         </div>
         <p>从服务器选购到环境配置，提供一站式 Minecraft 服务器搭建服务，让您轻松开服。</p>
@@ -1413,7 +1381,6 @@ footer {
 
       <div class="service-card reveal">
         <div class="service-card-header">
-          <div class="service-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
           <h3>服务端调试</h3>
         </div>
         <p>专业的服务端问题诊断与修复，解决崩溃、卡顿、插件冲突等各种技术难题。</p>
@@ -1421,7 +1388,6 @@ footer {
 
       <div class="service-card reveal">
         <div class="service-card-header">
-          <div class="service-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg></div>
           <h3>MC 问题答疑解惑</h3>
         </div>
         <p>任何关于 Minecraft 的技术问题，我们都将为您提供详细的解答与指导。</p>
@@ -1429,7 +1395,6 @@ footer {
 
       <div class="service-card reveal">
         <div class="service-card-header">
-          <div class="service-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
           <h3>接其他项目组帮助</h3>
         </div>
         <p>承接其他 Minecraft 项目组的技术协助与开发支持，提供专业的团队协作服务。</p>
@@ -1726,6 +1691,39 @@ window.addEventListener('load', () => {
     setTimeout(() => {
       fx.setText(originalText);
     }, 500);
+  }
+});
+
+// Image Modal Functions
+function openModal(imageSrc, title) {
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage');
+  const modalTitle = document.getElementById('modalTitle');
+  
+  modalImg.src = imageSrc;
+  modalImg.alt = title;
+  modalTitle.textContent = title;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  const modal = document.getElementById('imageModal');
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close modal on background click
+document.getElementById('imageModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('imageModal')) {
+    closeModal();
+  }
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeModal();
   }
 });
 </script>
