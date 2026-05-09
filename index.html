@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Starlight Development Team - 星光开发团队</title>
 <link rel="icon" href="assets/images/Starlight.png" type="image/png">
-<script src="assets/js/anime.min.js"></script>
 <style>
 :root {
   --primary-blue: #e6f0ff;
@@ -26,14 +25,13 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-pink) 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  color: var(--text-dark);
+  animation: gradientShift 20s ease infinite;
+  color: #e2e8f0;
   line-height: 1.6;
   min-height: 100vh;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  overflow-x: hidden;
 }
 
 @keyframes gradientShift {
@@ -41,26 +39,39 @@ body {
   50% { background-position: 100% 50%; }
 }
 
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--accent-blue), var(--accent-pink));
+  border-radius: 4px;
+}
+
+/* Navigation */
 nav {
   position: fixed;
   top: 0;
   width: 100%;
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 1000;
   padding: 1rem 5%;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 nav.scrolled {
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .nav-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -72,17 +83,19 @@ nav.scrolled {
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  color: var(--text-dark);
-  font-weight: 600;
-  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
 }
 
 .logo-icon {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: drop-shadow(0 0 10px rgba(74, 144, 226, 0.5));
 }
 
 .logo-icon img {
@@ -93,16 +106,17 @@ nav.scrolled {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
   list-style: none;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: var(--text-dark);
+  color: rgba(255,255,255,0.7);
   font-weight: 500;
   position: relative;
   transition: color 0.3s ease;
+  font-size: 0.95rem;
 }
 
 .nav-links a::after {
@@ -116,86 +130,95 @@ nav.scrolled {
   transition: width 0.3s ease;
 }
 
+.nav-links a:hover {
+  color: #fff;
+}
+
 .nav-links a:hover::after {
   width: 100%;
 }
 
+/* Hero Section */
 .hero {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 5% 2rem;
+  padding: 8rem 5% 4rem;
   position: relative;
   overflow: hidden;
 }
 
-.hero::before {
-  content: "";
+.hero-canvas {
   position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: float 6s ease-in-out infinite;
-  z-index: -1;
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.1); }
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 .hero-content {
   text-align: center;
-  max-width: 900px;
+  max-width: 1000px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: rgba(74, 144, 226, 0.15);
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  border-radius: 50px;
+  font-size: 0.9rem;
+  color: var(--accent-blue);
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
   animation: fadeInUp 1s ease;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .hero h1 {
-  font-size: 3.5rem;
+  font-size: 4.5rem;
   margin-bottom: 1rem;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 50%, #fff 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: textGlow 3s ease-in-out infinite alternate;
+  animation: textShine 5s linear infinite, fadeInUp 1s ease 0.2s both;
+  letter-spacing: -2px;
+  line-height: 1.1;
 }
 
-@keyframes textGlow {
-  from { filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.3)); }
-  to { filter: drop-shadow(0 0 30px rgba(255, 126, 185, 0.4)); }
+@keyframes textShine {
+  to { background-position: 200% center; }
 }
 
 .hero .subtitle {
-  font-size: 1.5rem;
-  color: var(--text-light);
-  margin-bottom: 1rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.3s forwards;
+  font-size: 1.6rem;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 1s ease 0.4s both;
+  font-weight: 300;
 }
 
 .hero p {
-  font-size: 1.25rem;
-  color: var(--text-light);
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.5s forwards;
+  font-size: 1.15rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInUp 1s ease 0.6s both;
 }
 
 .hero-buttons {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.7s forwards;
+  animation: fadeInUp 1s ease 0.8s both;
   flex-wrap: wrap;
 }
 
@@ -209,234 +232,485 @@ nav.scrolled {
   text-decoration: none;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
   border: none;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-button:hover::before {
+  left: 100%;
 }
 
 .cta-button:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.5);
 }
 
 .cta-button.outline {
   background: transparent;
-  color: var(--accent-blue);
-  border: 2px solid var(--accent-blue);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
   box-shadow: none;
 }
 
 .cta-button.outline:hover {
-  background: var(--accent-blue);
-  color: #fff;
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.5);
 }
 
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.8rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+  40% { transform: translateX(-50%) translateY(-10px); }
+  60% { transform: translateX(-50%) translateY(-5px); }
+}
+
+.scroll-indicator svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* Section Styling */
 .section-title {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: rgba(255,255,255,0.4);
+  margin-top: -0.5rem;
   margin-bottom: 3rem;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  font-size: 1.1rem;
+}
+
+/* Bespoke Team Section */
+.bespoke-section {
+  padding: 6rem 5%;
+  position: relative;
+  overflow: hidden;
+}
+
+.bespoke-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.bespoke-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.bespoke-content h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.projects {
-  padding: 5rem 5%;
-  max-width: 1200px;
+.bespoke-content p {
+  color: rgba(255,255,255,0.6);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.bespoke-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.bespoke-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.bespoke-feature-item:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateX(5px);
+  border-color: rgba(74, 144, 226, 0.3);
+}
+
+.bespoke-feature-item svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--accent-blue);
+  fill: none;
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+.bespoke-feature-item span {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.9rem;
+}
+
+.bespoke-visual {
+  position: relative;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bespoke-card {
+  width: 300px;
+  height: 380px;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(255, 126, 185, 0.2));
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  animation: floatCard 6s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+.bespoke-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(74, 144, 226, 0.3), transparent 30%);
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  100% { transform: rotate(360deg); }
+}
+
+.bespoke-card-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2rem;
+}
+
+.bespoke-card-inner img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.5));
+}
+
+.bespoke-card-inner h3 {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.bespoke-card-inner p {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+}
+
+/* Projects Section */
+.projects-section {
+  padding: 6rem 5%;
+  background: linear-gradient(180deg, transparent 0%, rgba(74, 144, 226, 0.05) 50%, transparent 100%);
+}
+
+.projects-container {
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
   margin-top: 3rem;
 }
 
-.project-card {
-  background: var(--glass);
-  border-radius: 20px;
-  padding: 2.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
+.project-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 1.8rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  opacity: 0;
-  transform: translateY(30px);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
   text-decoration: none;
   color: inherit;
   display: block;
 }
 
-.project-card::before {
-  content: "";
+.project-item::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transform-origin: left;
+  transition: transform 0.4s ease;
 }
 
-.project-card:hover::before {
+.project-item:hover::before {
   transform: scaleX(1);
 }
 
-.project-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.4);
+.project-item:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
-.project-icon {
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
-  border-radius: 18px;
+.project-item-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  transition: transform 0.3s ease;
-}
-
-.project-card:hover .project-icon {
-  transform: rotate(10deg) scale(1.1);
-}
-
-.project-icon svg {
-  width: 35px;
-  height: 35px;
-  fill: none;
-  stroke: #fff;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.project-card h3 {
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-  color: var(--text-dark);
-}
-
-.project-card .project-tag {
-  display: inline-block;
-  padding: 0.3rem 0.8rem;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
-  color: white;
-  border-radius: 20px;
-  font-size: 0.85rem;
+  gap: 1rem;
   margin-bottom: 1rem;
 }
 
-.project-card p {
-  color: var(--text-light);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-}
-
-.project-features {
-  list-style: none;
-  margin-bottom: 1.5rem;
-}
-
-.project-features li {
-  padding: 0.4rem 0;
-  color: var(--text-light);
-  position: relative;
-  padding-left: 1.5rem;
-  font-size: 0.95rem;
-}
-
-.project-features li::before {
-  content: "→";
-  position: absolute;
-  left: 0;
-  color: var(--accent-blue);
-  font-weight: bold;
-}
-
-.project-link {
-  display: inline-flex;
+.project-item-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(255, 126, 185, 0.2));
+  border-radius: 12px;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--accent-blue);
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.project-item h3 {
+  font-size: 1.2rem;
+  color: #fff;
   font-weight: 600;
-  transition: gap 0.3s ease;
 }
 
-.project-card:hover .project-link {
-  gap: 1rem;
+.project-item p {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
-.about {
-  padding: 5rem 5%;
-  background: linear-gradient(135deg, rgba(230, 240, 255, 0.4) 0%, rgba(255, 230, 240, 0.4) 100%);
-  text-align: center;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+.project-item-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
 }
 
-.about-content {
-  max-width: 800px;
+.project-tag {
+  padding: 0.25rem 0.75rem;
+  background: rgba(74, 144, 226, 0.15);
+  border: 1px solid rgba(74, 144, 226, 0.2);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+}
+
+/* Services Section */
+.services-section {
+  padding: 6rem 5%;
+  position: relative;
+}
+
+.services-container {
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.about p {
-  color: var(--text-light);
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 1rem;
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
 }
 
-.stats {
+.service-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+}
+
+.service-card:hover {
+  background: rgba(255,255,255,0.06);
+  transform: translateY(-5px);
+  border-color: rgba(74, 144, 226, 0.3);
+}
+
+.service-card-header {
   display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.service-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 4rem;
-  margin-top: 3rem;
+  font-size: 1.5rem;
+  box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
+}
+
+.service-card h3 {
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.service-card p {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+}
+
+/* Stats Section */
+.stats-section {
+  padding: 4rem 5%;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(255, 126, 185, 0.1) 100%);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.stats-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
   flex-wrap: wrap;
+  gap: 2rem;
 }
 
 .stat-item {
   text-align: center;
+  position: relative;
 }
 
 .stat-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff, var(--accent-blue));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  line-height: 1;
 }
 
 .stat-label {
-  color: var(--text-light);
-  font-size: 0.95rem;
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  margin-top: 0.5rem;
 }
 
-.contact {
-  padding: 5rem 5%;
-  max-width: 1200px;
-  margin: 0 auto;
+/* Contact Section */
+.contact-section {
+  padding: 6rem 5%;
   text-align: center;
+}
+
+.contact-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-section p {
+  color: rgba(255,255,255,0.5);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
 }
 
 .contact-links {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  margin-top: 2rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
@@ -446,40 +720,73 @@ nav.scrolled {
   padding: 1rem 2.5rem;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
   box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.contact-links a:hover::before {
+  left: 100%;
 }
 
 .contact-links a:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.5);
 }
 
+/* Footer */
 footer {
-  background: rgba(255, 255, 255, 0.4);
-  padding: 2rem 5%;
+  background: rgba(0,0,0,0.3);
+  padding: 3rem 5%;
   text-align: center;
-  color: var(--text-light);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.footer-logo img {
+  width: 32px;
+  height: 32px;
 }
 
 .footer-links {
-  margin-top: 1rem;
   display: flex;
   justify-content: center;
   gap: 2rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
 }
 
 .footer-links a {
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   text-decoration: none;
   transition: color 0.3s ease;
   position: relative;
@@ -497,53 +804,110 @@ footer {
 }
 
 .footer-links a:hover {
-  color: var(--accent-blue);
+  color: #fff;
 }
 
 .footer-links a:hover::after {
   width: 100%;
 }
 
-.particles {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
+.footer-copy {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.9rem;
 }
 
-.particle {
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered reveal for grids */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+.reveal-delay-6 { transition-delay: 0.6s; }
+.reveal-delay-7 { transition-delay: 0.7s; }
+.reveal-delay-8 { transition-delay: 0.8s; }
+
+/* Background ambient glow */
+.ambient-glow {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.7);
   border-radius: 50%;
-  animation: floatParticle 20s infinite linear;
-  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+  animation: floatGlow 15s ease-in-out infinite;
 }
 
-@keyframes floatParticle {
-  0% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0.8;
+@keyframes floatGlow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, -30px) scale(1.1); }
+  50% { transform: translate(-30px, 50px) scale(0.9); }
+  75% { transform: translate(20px, 20px) scale(1.05); }
+}
+
+/* Section entrance animation */
+.section-entrance {
+  animation: sectionSlideIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes sectionSlideIn {
+  from { opacity: 0; transform: translateY(80px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Parallax scroll effect */
+.parallax-bg {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+/* Magnetic hover effect */
+.magnetic-hover {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Glow pulse effect */
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(74, 144, 226, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(74, 144, 226, 0.4), 0 0 60px rgba(255, 126, 185, 0.2); }
+}
+
+/* Text scramble effect placeholder */
+.scramble-text {
+  display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .bespoke-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
-  25% {
-    transform: translateY(-100px) translateX(50px) scale(1.2);
-    opacity: 1;
+  .bespoke-visual {
+    order: -1;
+    height: 300px;
   }
-  50% {
-    transform: translateY(-200px) translateX(-30px) scale(0.8);
-    opacity: 0.6;
-  }
-  75% {
-    transform: translateY(-300px) translateX(80px) scale(1.1);
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(0) scale(0.5);
-    opacity: 0;
+  .hero h1 {
+    font-size: 3rem;
   }
 }
 
@@ -556,26 +920,33 @@ footer {
   }
   .nav-links {
     gap: 1rem;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+  }
+  .section-title {
+    font-size: 2rem;
   }
   .projects-grid {
     grid-template-columns: 1fr;
   }
-  .stats {
-    gap: 2rem;
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .contact-links {
-    flex-direction: column;
-    gap: 1rem;
+  .bespoke-features {
+    grid-template-columns: 1fr;
   }
-  .contact-links a {
-    width: 100%;
+  .stat-number {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
 </head>
 <body>
-<div class="particles" id="particles"></div>
 
 <nav id="navbar">
   <div class="nav-container">
@@ -583,114 +954,424 @@ footer {
       <div class="logo-icon"><img src="assets/images/Starlight.png" alt="Starlight"></div>
       <span>Starlight Team</span>
     </a>
-
     <ul class="nav-links">
+      <li><a href="#bespoke">Bespoke</a></li>
       <li><a href="#projects">项目</a></li>
-      <li><a href="#about">关于</a></li>
+      <li><a href="#services">服务</a></li>
       <li><a href="#contact">联系</a></li>
     </ul>
   </div>
 </nav>
 
 <section class="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
   <div class="hero-content">
+    <div class="hero-badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      专注 Minecraft 生态与安全技术
+    </div>
     <h1>Starlight Development Team</h1>
     <div class="subtitle">星光开发团队</div>
-    <p>专注于安全软件开发，为开发者和用户提供专业、可靠的解决方案</p>
+    <p>专注于安全软件开发与 Minecraft 客户端生态，为开发者和用户提供专业、可靠的解决方案</p>
     <div class="hero-buttons">
       <a href="#projects" class="cta-button">浏览项目</a>
+      <a href="#services" class="cta-button outline">我们的服务</a>
       <a href="https://github.com/GUAZIGEGE1337" class="cta-button outline" target="_blank">GitHub</a>
     </div>
   </div>
-</section>
-
-<section class="projects" id="projects">
-  <h2 class="section-title">我们的项目</h2>
-  <div class="projects-grid">
-    <a href="projects/starlight-shield.html" class="project-card">
-      <div class="project-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      </div>
-      <h3>Starlight Shield</h3>
-      <span class="project-tag">Java 安全工具</span>
-      <p>一款功能强大的 Java 代码保护工具，通过将 Java 字节码转换为原生代码，为您的应用程序提供多层安全保护，有效防止逆向工程和代码泄露。</p>
-      <ul class="project-features">
-        <li>字符串与数组加密保护</li>
-        <li>控制流混淆技术</li>
-        <li>跨平台原生库编译</li>
-        <li>多层安全防护机制</li>
-      </ul>
-      <span class="project-link">了解更多 →</span>
-    </a>
-
-    <a href="projects/starlight-verification.html" class="project-card">
-      <div class="project-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <h3>Starlight Verification</h3>
-      <span class="project-tag">身份验证系统</span>
-      <p>新一代安全验证解决方案，为您的应用提供稳定、安全、易用的身份验证服务。支持用户管理、项目授权、IRC 聊天等功能。</p>
-      <ul class="project-features">
-        <li>安全的用户身份验证</li>
-        <li>项目授权与激活码管理</li>
-        <li>内置 IRC 实时聊天</li>
-        <li>邮箱找回密码支持</li>
-      </ul>
-      <span class="project-link">了解更多 →</span>
-    </a>
+  <div class="scroll-indicator">
+    <span>向下滚动</span>
+    <svg viewBox="0 0 24 24"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
   </div>
 </section>
 
-<section class="about" id="about">
-  <div class="about-content">
-    <h2 class="section-title">关于我们</h2>
-    <p>
-      <strong>Starlight Development Team</strong> 是一支专注于<strong>安全软件开发</strong>与 <strong>Minecraft 客户端生态</strong>的技术团队。我们致力于为开发者和用户提供专业、可靠的软件解决方案，涵盖代码保护、身份验证及客户端开发协助等多个领域。
-    </p>
-    <p style="margin-top: 1rem;">
-      我们的产品包括 <strong>Starlight Shield</strong>（Java 代码保护工具）与 <strong>Starlight Verification</strong>（安全验证系统），同时为多款 Minecraft 客户端如 Perish、OolongTea Client、Starlight、Astronaut、Sugar、Zenith、Yuki、Spectrum 等提供开发协助、验证服务与安全保护。
-    </p>
-    <div class="stats">
-      <div class="stat-item">
-        <div class="stat-number">3+</div>
-        <div class="stat-label">核心产品</div>
+<section class="bespoke-section" id="bespoke">
+  <div class="ambient-glow" style="width:400px;height:400px;background:radial-gradient(circle, var(--accent-blue), transparent 70%);top:10%;left:-10%;"></div>
+  <div class="ambient-glow" style="width:300px;height:300px;background:radial-gradient(circle, var(--accent-pink), transparent 70%);bottom:10%;right:-5%;animation-delay:-5s;"></div>
+  <div class="bespoke-container">
+    <div class="bespoke-content reveal">
+      <h2>Starlight Bespoke Team</h2>
+      <p>隶属于 Starlight Development Team 分支，深耕 Minecraft 客户端高阶定制。以极致精工打磨专属架构、美学设计与功能内核，于方寸像素之间，塑造独一无二的专属客户端体验。</p>
+      <p>从概念到成品，我们提供全方位的定制服务，确保每个细节都符合您的独特需求。</p>
+      <div class="bespoke-features">
+        <div class="bespoke-feature-item">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span>专属架构设计</span>
+        </div>
+        <div class="bespoke-feature-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          <span>美学界面定制</span>
+        </div>
+        <div class="bespoke-feature-item">
+          <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+          <span>功能内核开发</span>
+        </div>
+        <div class="bespoke-feature-item">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span>性能优化调校</span>
+        </div>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">10+</div>
-        <div class="stat-label">合作客户端</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">3+</div>
-        <div class="stat-label">支持平台</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">24/7</div>
-        <div class="stat-label">技术支持</div>
+    </div>
+    <div class="bespoke-visual reveal">
+      <div class="bespoke-card glow-pulse">
+        <div class="bespoke-card-inner">
+          <img src="assets/images/Starlight.png" alt="Starlight Bespoke">
+          <h3>Bespoke</h3>
+          <p>高阶定制 · 独一无二</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="contact" id="contact">
-  <h2 class="section-title">联系我们</h2>
-  <p>有任何问题或建议？欢迎通过以下方式联系我们</p>
-  <div class="contact-links">
-    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
-    <a href="https://qm.qq.com/q/hZoerSpkFG" target="_blank">QQ 群</a>
-    <a href="mailto:StarlightDevelopmentTeam@outlook.com">电子邮件</a>
+<section class="stats-section">
+  <div class="stats-container">
+    <div class="stat-item reveal">
+      <div class="stat-number" data-count="15">0</div>
+      <div class="stat-label">参与项目</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number" data-count="8">0</div>
+      <div class="stat-label">核心服务</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number" data-count="24">0</div>
+      <div class="stat-label">小时支持</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number" data-count="100">0</div>
+      <div class="stat-label">远程服务</div>
+    </div>
+  </div>
+</section>
+
+<section class="projects-section" id="projects">
+  <div class="ambient-glow" style="width:500px;height:500px;background:radial-gradient(circle, var(--accent-purple), transparent 70%);top:20%;right:-15%;animation-delay:-8s;"></div>
+  <div class="projects-container">
+    <h2 class="section-title reveal">参与项目</h2>
+    <p class="section-subtitle reveal">我们参与开发、协助或提供安全保护的项目</p>
+    <div class="projects-grid">
+      <a href="projects/starlight-shield.html" class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🛡️</div>
+          <h3>Starlight Shield</h3>
+        </div>
+        <p>Java 代码保护工具，将字节码转换为原生代码，提供多层安全防护。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">安全工具</span>
+          <span class="project-tag">Java</span>
+        </div>
+      </a>
+
+      <a href="projects/starlight-verification.html" class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🔐</div>
+          <h3>Starlight Verification</h3>
+        </div>
+        <p>新一代安全验证解决方案，提供身份验证与授权管理服务。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">验证系统</span>
+          <span class="project-tag">安全</span>
+        </div>
+      </a>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🚀</div>
+          <h3>Astronaut</h3>
+        </div>
+        <p>Minecraft 客户端开发协助与安全保护服务。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">协助</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🚀</div>
+          <h3>Astronaut-Reborn</h3>
+        </div>
+        <p>Minecraft 客户端开发协助与安全保护服务。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">协助</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🎯</div>
+          <h3>Vertrc Client</h3>
+        </div>
+        <p>Minecraft 客户端开发与技术支持。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">开发</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🐸</div>
+          <h3>Frog</h3>
+        </div>
+        <p>Minecraft 客户端开发协助与验证服务。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">验证</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🐸</div>
+          <h3>Frog Pro</h3>
+        </div>
+        <p>Minecraft 客户端开发协助与验证服务。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">验证</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">☀️</div>
+          <h3>SunZheng Client</h3>
+        </div>
+        <p>Minecraft 客户端技术支持与定制服务。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">定制</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">💡</div>
+          <h3>LuminClient</h3>
+        </div>
+        <p>Minecraft 客户端开发协助。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">协助</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">⚡</div>
+          <h3>Perish</h3>
+        </div>
+        <p>Minecraft 客户端安全保护与验证服务。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">安全</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">⚡</div>
+          <h3>Perish-Hyperion</h3>
+        </div>
+        <p>Minecraft 客户端安全保护与验证服务。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">安全</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🔮</div>
+          <h3>Hextech-nightly</h3>
+        </div>
+        <p>Minecraft 客户端开发协助。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">开发</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🍵</div>
+          <h3>OolongTea Client</h3>
+        </div>
+        <p>Minecraft 客户端开发协助与验证服务。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">验证</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">⭐</div>
+          <h3>Orion Client</h3>
+        </div>
+        <p>Minecraft 客户端技术支持。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">支持</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🌌</div>
+          <h3>Starlight Drift</h3>
+        </div>
+        <p>Minecraft 客户端项目。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">项目</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🎮</div>
+          <h3>BC God</h3>
+        </div>
+        <p>Minecraft 相关项目开发协助。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">项目</span>
+          <span class="project-tag">协助</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🎮</div>
+          <h3>BC God NextGen</h3>
+        </div>
+        <p>Minecraft 相关项目开发协助。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">项目</span>
+          <span class="project-tag">协助</span>
+        </div>
+      </div>
+
+      <div class="project-item reveal">
+        <div class="project-item-header">
+          <div class="project-item-icon">🔧</div>
+          <h3>Epsilon</h3>
+        </div>
+        <p>Minecraft 客户端技术支持。</p>
+        <div class="project-item-tags">
+          <span class="project-tag">客户端</span>
+          <span class="project-tag">支持</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services-section" id="services">
+  <div class="ambient-glow" style="width:400px;height:400px;background:radial-gradient(circle, var(--accent-cyan), transparent 70%);bottom:10%;left:-10%;animation-delay:-12s;"></div>
+  <div class="services-container">
+    <h2 class="section-title reveal">我们的服务</h2>
+    <p class="section-subtitle reveal">有任何关于 Minecraft 的需求，都可找我们 — 以上均为包远程服务</p>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-card-header">
+          <div class="service-icon">🔧</div>
+          <h3>Mod 开发</h3>
+        </div>
+        <p>专业的 Minecraft Mod 开发服务，从功能设计到代码实现，打造符合您需求的专属 Mod。</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-header">
+          <div class="service-icon">🔌</div>
+          <h3>服务器插件定制</h3>
+        </div>
+        <p>定制化服务器插件开发，支持 Bukkit、Spigot、Paper 等主流服务端，满足您的独特玩法需求。</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-header">
+          <div class="service-icon">🎨</div>
+          <h3>Mod 定制</h3>
+        </div>
+        <p>现有 Mod 功能定制与改造，根据您的需求调整功能、界面与交互逻辑。</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-header">
+          <div class="service-icon">🖼️</div>
+          <h3>材质包定制</h3>
+        </div>
+        <p>高品质材质包设计与制作，从 16x 到 512x 分辨率，打造独特的视觉风格。</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-header">
+          <div class="service-icon">⚙️</div>
+          <h3>客户端参数销售</h3>
+        </div>
+        <p>提供各种客户端参数配置，优化游戏性能与视觉效果，提升游戏体验。</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-header">
+          <div class="service-icon">🖥️</div>
+          <h3>MC 服务器搭建</h3>
+        </div>
+        <p>从服务器选购到环境配置，提供一站式 Minecraft 服务器搭建服务，让您轻松开服。</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-header">
+          <div class="service-icon">🐛</div>
+          <h3>服务端调试</h3>
+        </div>
+        <p>专业的服务端问题诊断与修复，解决崩溃、卡顿、插件冲突等各种技术难题。</p>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-card-header">
+          <div class="service-icon">💬</div>
+          <h3>MC 问题答疑解惑</h3>
+        </div>
+        <p>任何关于 Minecraft 的技术问题，我们都将为您提供详细的解答与指导。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="contact-container reveal">
+    <h2 class="section-title">联系我们</h2>
+    <p>有任何问题或需求？欢迎通过以下方式联系我们</p>
+    <div class="contact-links">
+      <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+      <a href="https://qm.qq.com/q/hZoerSpkFG" target="_blank">QQ 群</a>
+      <a href="mailto:StarlightDevelopmentTeam@outlook.com">电子邮件</a>
+    </div>
   </div>
 </section>
 
 <footer>
-  <p>&copy; 2025 Starlight Development Team. All rights reserved.</p>
-  <div class="footer-links">
-    <a href="projects/starlight-shield.html">Starlight Shield</a>
-    <a href="projects/starlight-verification.html">Starlight Verification</a>
-    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img src="assets/images/Starlight.png" alt="Starlight">
+      Starlight Development Team
+    </div>
+    <div class="footer-links">
+      <a href="projects/starlight-shield.html">Starlight Shield</a>
+      <a href="projects/starlight-verification.html">Starlight Verification</a>
+      <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+    </div>
+    <p class="footer-copy">&copy; 2025 Starlight Development Team. All rights reserved.</p>
   </div>
 </footer>
 
 <script>
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();
@@ -699,40 +1380,250 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
+// Navbar scroll effect
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-const createParticle = () => {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.left = Math.random() * 100 + '%';
-  p.style.top = '100%';
-  p.style.animationDelay = Math.random() * 5 + 's';
-  const size = Math.random() * 4 + 2;
-  p.style.width = p.style.height = size + 'px';
-  document.getElementById('particles').appendChild(p);
-  setTimeout(() => p.remove(), 20000);
-};
-setInterval(createParticle, 300);
-for (let i = 0; i < 5; i++) setTimeout(createParticle, i * 200);
-
-const io = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+// Scroll reveal animation
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
     if (entry.isIntersecting) {
-      anime({
-        targets: entry.target,
-        opacity: [0, 1],
-        translateY: [30, 0],
-        delay: i * 100,
-        duration: 800,
-        easing: 'easeOutQuad'
-      });
-      io.unobserve(entry.target);
+      entry.target.classList.add('active');
+      revealObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1 });
-document.querySelectorAll('.project-card').forEach(card => io.observe(card));
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// Number counter animation
+const statNumbers = document.querySelectorAll('.stat-number');
+const countObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const target = parseInt(entry.target.dataset.count);
+      let current = 0;
+      const increment = target / 60;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          entry.target.textContent = target + '+';
+          clearInterval(timer);
+        } else {
+          entry.target.textContent = Math.floor(current);
+        }
+      }, 25);
+      countObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+statNumbers.forEach(stat => countObserver.observe(stat));
+
+// Hero Canvas Animation - Enhanced with flowing particles
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+let particles = [];
+let mouseX = 0, mouseY = 0;
+
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+window.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+resize();
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.opacity = Math.random() * 0.5 + 0.1;
+    this.hue = Math.random() * 60 + 200; // Blue to purple range
+  }
+  update() {
+    // Mouse interaction - particles gently repel from cursor
+    const dx = this.x - mouseX;
+    const dy = this.y - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 150) {
+      const force = (150 - dist) / 150;
+      this.speedX += (dx / dist) * force * 0.02;
+      this.speedY += (dy / dist) * force * 0.02;
+    }
+    
+    this.x += this.speedX;
+    this.y += this.speedY;
+    
+    // Damping
+    this.speedX *= 0.99;
+    this.speedY *= 0.99;
+    
+    if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${this.hue}, 70%, 60%, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+// Flowing wave lines
+let waveOffset = 0;
+function drawWaves() {
+  waveOffset += 0.005;
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, height * 0.3 + i * 80);
+    for (let x = 0; x < width; x += 5) {
+      const y = height * 0.3 + i * 80 + Math.sin(x * 0.003 + waveOffset + i) * 30;
+      ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = `rgba(74, 144, 226, ${0.03 - i * 0.005})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+  
+  // Draw flowing waves
+  drawWaves();
+  
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  
+  // Draw connections with gradient
+  particles.forEach((p1, i) => {
+    particles.slice(i + 1).forEach(p2 => {
+      const dx = p1.x - p2.x;
+      const dy = p1.y - p2.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+        gradient.addColorStop(0, `rgba(74, 144, 226, ${0.1 * (1 - dist / 150)})`);
+        gradient.addColorStop(1, `rgba(255, 126, 185, ${0.1 * (1 - dist / 150)})`);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    });
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Parallax scroll effect for sections
+window.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  const parallaxElements = document.querySelectorAll('.parallax-bg');
+  parallaxElements.forEach(el => {
+    const speed = el.dataset.speed || 0.5;
+    el.style.transform = `translateY(${scrolled * speed}px)`;
+  });
+});
+
+// Magnetic hover effect for cards
+document.querySelectorAll('.project-item, .service-card, .feature-card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${-y * 0.02}deg) rotateY(${x * 0.02}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+// Text scramble effect for hero title
+class TextScramble {
+  constructor(el) {
+    this.el = el;
+    this.chars = '!<>-_\\/[]{}—=+*^?#________';
+    this.update = this.update.bind(this);
+  }
+  setText(newText) {
+    const oldText = this.el.innerText;
+    const length = Math.max(oldText.length, newText.length);
+    const promise = new Promise((resolve) => this.resolve = resolve);
+    this.queue = [];
+    for (let i = 0; i < length; i++) {
+      const from = oldText[i] || '';
+      const to = newText[i] || '';
+      const start = Math.floor(Math.random() * 40);
+      const end = start + Math.floor(Math.random() * 40);
+      this.queue.push({ from, to, start, end });
+    }
+    cancelAnimationFrame(this.frameRequest);
+    this.frame = 0;
+    this.update();
+    return promise;
+  }
+  update() {
+    let output = '';
+    let complete = 0;
+    for (let i = 0, n = this.queue.length; i < n; i++) {
+      let { from, to, start, end, char } = this.queue[i];
+      if (this.frame >= end) {
+        complete++;
+        output += to;
+      } else if (this.frame >= start) {
+        if (!char || Math.random() < 0.28) {
+          char = this.randomChar();
+          this.queue[i].char = char;
+        }
+        output += `<span style="color: var(--accent-blue)">${char}</span>`;
+      } else {
+        output += from;
+      }
+    }
+    this.el.innerHTML = output;
+    if (complete === this.queue.length) {
+      this.resolve();
+    } else {
+      this.frameRequest = requestAnimationFrame(this.update);
+      this.frame++;
+    }
+  }
+  randomChar() {
+    return this.chars[Math.floor(Math.random() * this.chars.length)];
+  }
+}
+
+// Apply scramble effect on load
+window.addEventListener('load', () => {
+  const title = document.querySelector('.hero h1');
+  if (title) {
+    const fx = new TextScramble(title);
+    const originalText = title.innerText;
+    title.innerText = '';
+    setTimeout(() => {
+      fx.setText(originalText);
+    }, 500);
+  }
+});
 </script>
 </body>
 </html>

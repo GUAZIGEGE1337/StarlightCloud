@@ -5,35 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Starlight Shield - Java 代码保护工具 | Starlight Development Team</title>
 <link rel="icon" href="../assets/images/Starlight.png" type="image/png">
-<script src="../assets/js/anime.min.js"></script>
 <style>
 :root {
-  --primary-blue: #e6f0ff;
-  --primary-pink: #ffe6f0;
   --accent-blue: #4a90e2;
   --accent-pink: #ff7eb9;
-  --text-dark: #2d3748;
-  --text-light: #718096;
-  --white: rgba(255, 255, 255, 0.85);
-  --glass: rgba(255, 255, 255, 0.25);
+  --accent-purple: #8b5cf6;
+  --accent-cyan: #06b6d4;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-pink) 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  color: var(--text-dark);
+  animation: gradientShift 20s ease infinite;
+  color: #e2e8f0;
   line-height: 1.6;
   min-height: 100vh;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  overflow-x: hidden;
 }
 
 @keyframes gradientShift {
@@ -41,26 +31,31 @@ body {
   50% { background-position: 100% 50%; }
 }
 
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent-blue), var(--accent-pink)); border-radius: 4px; }
+
+/* Navigation */
 nav {
   position: fixed;
   top: 0;
   width: 100%;
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 1000;
   padding: 1rem 5%;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 nav.scrolled {
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .nav-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -72,17 +67,19 @@ nav.scrolled {
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  color: var(--text-dark);
-  font-weight: 600;
-  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
 }
 
 .logo-icon {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: drop-shadow(0 0 10px rgba(74, 144, 226, 0.5));
 }
 
 .logo-icon img {
@@ -93,16 +90,17 @@ nav.scrolled {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
   list-style: none;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: var(--text-dark);
+  color: rgba(255,255,255,0.7);
   font-weight: 500;
   position: relative;
   transition: color 0.3s ease;
+  font-size: 0.95rem;
 }
 
 .nav-links a::after {
@@ -116,10 +114,10 @@ nav.scrolled {
   transition: width 0.3s ease;
 }
 
-.nav-links a:hover::after {
-  width: 100%;
-}
+.nav-links a:hover { color: #fff; }
+.nav-links a:hover::after { width: 100%; }
 
+/* Hero */
 .hero {
   min-height: 70vh;
   display: flex;
@@ -130,72 +128,69 @@ nav.scrolled {
   overflow: hidden;
 }
 
-.hero::before {
-  content: "";
+.hero-canvas {
   position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: float 6s ease-in-out infinite;
-  z-index: -1;
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.1); }
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 .hero-content {
   text-align: center;
   max-width: 900px;
-  animation: fadeInUp 1s ease;
+  position: relative;
+  z-index: 1;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  gap: 1rem;
+  color: var(--accent-pink);
 }
 
 .hero h1 {
   font-size: 3.5rem;
   margin-bottom: 1rem;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 50%, #fff 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: textGlow 3s ease-in-out infinite alternate;
+  animation: textShine 5s linear infinite;
+  letter-spacing: -2px;
 }
 
-@keyframes textGlow {
-  from { filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.3)); }
-  to { filter: drop-shadow(0 0 30px rgba(255, 126, 185, 0.4)); }
+@keyframes textShine {
+  to { background-position: 200% center; }
 }
 
 .hero .subtitle {
   font-size: 1.3rem;
-  color: var(--text-light);
+  color: rgba(255,255,255,0.6);
   margin-bottom: 1.5rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.3s forwards;
 }
 
 .hero p {
   font-size: 1.15rem;
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.5s forwards;
 }
 
 .hero-buttons {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.7s forwards;
   flex-wrap: wrap;
 }
 
@@ -209,49 +204,62 @@ nav.scrolled {
   text-decoration: none;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
   border: none;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-button:hover::before { left: 100%; }
 .cta-button:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.5);
 }
 
 .cta-button.outline {
   background: transparent;
-  color: var(--accent-blue);
-  border: 2px solid var(--accent-blue);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
   box-shadow: none;
 }
 
 .cta-button.outline:hover {
-  background: var(--accent-blue);
-  color: #fff;
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.5);
 }
 
+/* Section Title */
 .section-title {
   text-align: center;
   font-size: 2.5rem;
-  margin-bottom: 3rem;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
 }
 
 .section-subtitle {
   text-align: center;
-  color: var(--text-light);
-  margin-top: -2rem;
+  color: rgba(255,255,255,0.4);
   margin-bottom: 3rem;
   font-size: 1.1rem;
 }
 
+/* Features */
 .features {
   padding: 5rem 5%;
   max-width: 1200px;
@@ -260,53 +268,47 @@ nav.scrolled {
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
   margin-top: 3rem;
 }
 
 .feature-card {
-  background: var(--glass);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  opacity: 0;
-  transform: translateY(30px);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
 }
 
 .feature-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transform-origin: left;
+  transition: transform 0.4s ease;
 }
 
-.feature-card:hover::before {
-  transform: scaleX(1);
-}
+.feature-card:hover::before { transform: scaleX(1); }
 
 .feature-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 .feature-icon {
   width: 60px;
   height: 60px;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(255, 126, 185, 0.2));
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -316,7 +318,7 @@ nav.scrolled {
 }
 
 .feature-card:hover .feature-icon {
-  transform: rotate(15deg) scale(1.1);
+  transform: rotate(10deg) scale(1.1);
 }
 
 .feature-icon svg {
@@ -332,97 +334,220 @@ nav.scrolled {
 .feature-card h3 {
   font-size: 1.4rem;
   margin-bottom: 1rem;
-  color: var(--text-dark);
+  color: #fff;
 }
 
 .feature-card p {
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   line-height: 1.7;
 }
 
+/* Platforms */
 .platforms {
   padding: 5rem 5%;
-  background: linear-gradient(135deg, rgba(230, 240, 255, 0.4) 0%, rgba(255, 230, 240, 0.4) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(74, 144, 226, 0.05) 50%, transparent 100%);
   text-align: center;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
 }
 
 .platforms-grid {
   display: flex;
   justify-content: center;
-  gap: 3rem;
+  gap: 2rem;
   margin-top: 3rem;
   flex-wrap: wrap;
 }
 
 .platform-item {
-  background: var(--glass);
-  border-radius: 15px;
-  padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  min-width: 150px;
-  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  min-width: 180px;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.platform-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(30%, -30%);
 }
 
 .platform-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(74, 144, 226, 0.15);
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(74, 144, 226, 0.3);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 .platform-icon {
   font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .platform-name {
   font-weight: 600;
-  color: var(--text-dark);
+  color: #fff;
+  font-size: 1.1rem;
 }
 
 .platform-arch {
-  color: var(--text-light);
+  color: rgba(255,255,255,0.4);
   font-size: 0.9rem;
+  margin-top: 0.5rem;
 }
 
+/* Code Comparison */
 .usage {
   padding: 5rem 5%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
-.code-block {
-  background: rgba(30, 30, 30, 0.9);
-  border-radius: 15px;
+.code-comparison-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin: 3rem 0 1.5rem;
+  color: #fff;
+}
+
+.code-comparison-title span {
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.comparison-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.code-window {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
   padding: 1.5rem;
-  margin: 1.5rem 0;
+  width: 520px;
+  flex-shrink: 0;
+  transition: all 0.4s ease;
+}
+
+.code-window:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.code-window.protected {
+  border: 2px solid rgba(74, 144, 226, 0.3);
+  box-shadow: 0 8px 32px rgba(74, 144, 226, 0.1);
+}
+
+.code-window-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.code-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.code-dot.red { background: #ff5f57; }
+.code-dot.yellow { background: #febc2e; }
+.code-dot.green { background: #28c840; }
+
+.code-window-title {
+  margin-left: 0.5rem;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.code-window.protected .code-window-title {
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.protected-badge {
+  margin-left: auto;
+  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  color: white;
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+}
+
+.code-block {
+  background: rgba(10, 10, 15, 0.8);
+  border-radius: 12px;
+  padding: 1.5rem;
   overflow-x: auto;
-  font-family: 'Consolas', 'Monaco', monospace;
-  font-size: 0.95rem;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.8rem;
   line-height: 1.6;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 .code-block code {
   color: #e6e6e6;
+  white-space: pre;
+  display: block;
 }
 
-.code-comment {
-  color: #6a9955;
+/* Summary */
+.summary-box {
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(255, 126, 185, 0.1) 100%);
+  border-radius: 20px;
+  padding: 2.5rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+  margin: 3rem auto 0;
+  max-width: 900px;
+  position: relative;
+  overflow: hidden;
 }
 
-.code-keyword {
-  color: #569cd6;
+.summary-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
 }
 
-.code-string {
-  color: #ce9178;
+.summary-box h4 {
+  color: #fff;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
 }
 
+.summary-box p {
+  color: rgba(255,255,255,0.5);
+  line-height: 1.8;
+}
+
+.summary-box strong {
+  color: var(--accent-blue);
+}
+
+/* Requirements */
 .requirements {
   padding: 5rem 5%;
-  background: linear-gradient(135deg, rgba(230, 240, 255, 0.4) 0%, rgba(255, 230, 240, 0.4) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(74, 144, 226, 0.05) 50%, transparent 100%);
 }
 
 .requirements-content {
@@ -436,15 +561,21 @@ nav.scrolled {
 }
 
 .requirements-list li {
-  padding: 1rem;
-  background: var(--glass);
-  border-radius: 10px;
+  padding: 1.2rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 15px;
   margin-bottom: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
   gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.requirements-list li:hover {
+  background: rgba(255,255,255,0.06);
+  transform: translateX(5px);
+  border-color: rgba(74, 144, 226, 0.2);
 }
 
 .requirements-list li::before {
@@ -454,6 +585,7 @@ nav.scrolled {
   font-size: 1.2rem;
 }
 
+/* Contact */
 .contact {
   padding: 5rem 5%;
   max-width: 1200px;
@@ -464,7 +596,7 @@ nav.scrolled {
 .contact-links {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
   margin-top: 2rem;
   flex-wrap: wrap;
 }
@@ -475,40 +607,70 @@ nav.scrolled {
   padding: 1rem 2.5rem;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
   box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
+.contact-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.contact-links a:hover::before { left: 100%; }
 .contact-links a:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.5);
 }
 
+/* Footer */
 footer {
-  background: rgba(255, 255, 255, 0.4);
-  padding: 2rem 5%;
+  background: rgba(0,0,0,0.3);
+  padding: 3rem 5%;
   text-align: center;
-  color: var(--text-light);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.footer-logo img {
+  width: 32px;
+  height: 32px;
 }
 
 .footer-links {
-  margin-top: 1rem;
   display: flex;
   justify-content: center;
   gap: 2rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
 }
 
 .footer-links a {
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   text-decoration: none;
   transition: color 0.3s ease;
   position: relative;
@@ -525,98 +687,65 @@ footer {
   transition: width 0.3s ease;
 }
 
-.footer-links a:hover {
-  color: var(--accent-blue);
+.footer-links a:hover { color: #fff; }
+.footer-links a:hover::after { width: 100%; }
+
+.footer-copy {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.9rem;
 }
 
-.footer-links a:hover::after {
-  width: 100%;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--accent-blue);
-  text-decoration: none;
-  font-weight: 500;
-  margin-bottom: 2rem;
-  transition: gap 0.3s ease;
-}
-
-.back-link:hover {
-  gap: 1rem;
-}
-
-.particles {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.particle {
+/* Background ambient glow */
+.ambient-glow {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.7);
   border-radius: 50%;
-  animation: floatParticle 20s infinite linear;
-  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+  animation: floatGlow 15s ease-in-out infinite;
 }
 
-@keyframes floatParticle {
-  0% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0.8;
-  }
-  25% {
-    transform: translateY(-100px) translateX(50px) scale(1.2);
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(-200px) translateX(-30px) scale(0.8);
-    opacity: 0.6;
-  }
-  75% {
-    transform: translateY(-300px) translateX(80px) scale(1.1);
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(0) scale(0.5);
-    opacity: 0;
-  }
+@keyframes floatGlow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, -30px) scale(1.1); }
+  50% { transform: translate(-30px, 50px) scale(0.9); }
+  75% { transform: translate(20px, 20px) scale(1.05); }
 }
 
+/* Glow pulse effect */
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(74, 144, 226, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(74, 144, 226, 0.4), 0 0 60px rgba(255, 126, 185, 0.2); }
+}
+
+/* Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-  .nav-links {
-    gap: 1rem;
-    font-size: 0.9rem;
-  }
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-  .platforms-grid {
-    gap: 1rem;
-  }
-  .contact-links {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .contact-links a {
-    width: 100%;
-  }
+  .hero h1 { font-size: 2.5rem; }
+  .nav-links { gap: 1rem; font-size: 0.85rem; }
+  .features-grid { grid-template-columns: 1fr; }
+  .comparison-container { flex-direction: column; align-items: center; }
+  .code-window { width: 100%; max-width: 520px; }
+  .section-title { font-size: 2rem; }
 }
 </style>
 </head>
 <body>
-<div class="particles" id="particles"></div>
 
 <nav id="navbar">
   <div class="nav-container">
@@ -624,17 +753,17 @@ footer {
       <div class="logo-icon"><img src="../assets/images/Starlight.png" alt="Starlight"></div>
       <span>Starlight Team</span>
     </a>
-
     <ul class="nav-links">
-      <li><a href="../index.html#projects">项目</a></li>
+      <li><a href="../index.html">首页</a></li>
       <li><a href="#features">特性</a></li>
-      <li><a href="#usage">使用</a></li>
+      <li><a href="#usage">效果</a></li>
       <li><a href="#contact">联系</a></li>
     </ul>
   </div>
 </nav>
 
 <section class="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
   <div class="hero-content">
     <a href="../index.html" class="back-link">← 返回首页</a>
     <h1>Starlight Shield</h1>
@@ -648,10 +777,12 @@ footer {
 </section>
 
 <section class="features" id="features">
-  <h2 class="section-title">核心特性</h2>
-  <p class="section-subtitle">多层安全保护，全方位守护您的代码</p>
+  <div class="ambient-glow" style="width:400px;height:400px;background:radial-gradient(circle, var(--accent-blue), transparent 70%);top:10%;left:-10%;"></div>
+  <div class="ambient-glow" style="width:300px;height:300px;background:radial-gradient(circle, var(--accent-pink), transparent 70%);bottom:10%;right:-5%;animation-delay:-5s;"></div>
+  <h2 class="section-title reveal">核心特性</h2>
+  <p class="section-subtitle reveal">多层安全保护，全方位守护您的代码</p>
   <div class="features-grid">
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
@@ -659,7 +790,7 @@ footer {
       <p>支持字符串和数组的多层加密保护，在运行时动态解密，有效防止敏感数据被提取。加密过程完全自动化，无需手动修改代码。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
       </div>
@@ -667,7 +798,7 @@ footer {
       <p>将代码逻辑转换为状态机模式，插入虚假控制流分支，使反编译器无法确定实际执行路径，大幅提升代码分析难度。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       </div>
@@ -675,7 +806,7 @@ footer {
       <p>将简单的运算指令替换为复杂的等效运算，增加代码分析难度。支持多种运算类型的替换，包括算术运算、位运算等。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       </div>
@@ -683,7 +814,7 @@ footer {
       <p>支持 Windows、macOS、Linux 三大主流平台，覆盖 x86_64 和 AARCH64 架构。一次配置，多平台编译输出。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
@@ -691,7 +822,7 @@ footer {
       <p>使用 Zig 编译器将 Java 字节码转换为 C 代码并编译为原生库，代码不再以 Java 字节码形式存在，从根本上防止反编译。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </div>
@@ -702,20 +833,21 @@ footer {
 </section>
 
 <section class="platforms" id="platforms">
-  <h2 class="section-title">支持平台</h2>
-  <p class="section-subtitle">一次配置，多平台输出</p>
+  <div class="ambient-glow" style="width:500px;height:500px;background:radial-gradient(circle, var(--accent-purple), transparent 70%);top:20%;right:-15%;animation-delay:-8s;"></div>
+  <h2 class="section-title reveal">支持平台</h2>
+  <p class="section-subtitle reveal">一次配置，多平台输出</p>
   <div class="platforms-grid">
-    <div class="platform-item">
+    <div class="platform-item reveal">
       <div class="platform-icon">🪟</div>
       <div class="platform-name">Windows</div>
       <div class="platform-arch">x86_64, AARCH64</div>
     </div>
-    <div class="platform-item">
+    <div class="platform-item reveal">
       <div class="platform-icon">🍎</div>
       <div class="platform-name">macOS</div>
       <div class="platform-arch">x86_64, AARCH64</div>
     </div>
-    <div class="platform-item">
+    <div class="platform-item reveal">
       <div class="platform-icon">🐧</div>
       <div class="platform-name">Linux</div>
       <div class="platform-arch">x86_64, AARCH64</div>
@@ -724,28 +856,24 @@ footer {
 </section>
 
 <section class="usage" id="usage">
-  <h2 class="section-title">混淆效果展示</h2>
-  <p class="section-subtitle">对比普通 Native 翻译与Starlight Shield混淆保护效果</p>
+  <div class="ambient-glow" style="width:400px;height:400px;background:radial-gradient(circle, var(--accent-cyan), transparent 70%);bottom:10%;left:-10%;animation-delay:-12s;"></div>
+  <h2 class="section-title reveal">混淆效果展示</h2>
+  <p class="section-subtitle reveal">对比普通 Native 翻译与 Starlight Shield 混淆保护效果</p>
 
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
-    
-    <!-- C Layer Comparison -->
-    <div style="margin-bottom: 4rem;">
-      <h3 style="margin: 2rem 0 1.5rem; color: var(--text-dark); font-size: 1.5rem; text-align: center;">
-        <span style="background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">C 层代码保护对比</span>
-      </h3>
-      
-      <div style="display: flex; justify-content: center; gap: 2rem;">
-        <!-- Before -->
-        <div style="background: var(--glass); border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); width: 520px; flex-shrink: 0;">
-          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-            <div style="width: 12px; height: 12px; background: #ff5f57; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
-            <span style="margin-left: 0.5rem; color: var(--text-light); font-size: 0.9rem; font-weight: 500;">普通 Native 翻译</span>
-          </div>
-          <div class="code-block" style="height: 380px; overflow-y: auto; margin: 0; border-radius: 10px;">
-            <code style="white-space: pre; font-size: 0.75rem; display: block;">void JNICALL Starlight_1(JNIEnv *env, jobject obj, jint arg0) {
+  <div class="code-comparison-title reveal">
+    <span>C 层代码保护对比</span>
+  </div>
+  
+  <div class="comparison-container reveal">
+    <div class="code-window">
+      <div class="code-window-header">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-window-title">普通 Native 翻译</span>
+      </div>
+      <div class="code-block" style="height: 380px; overflow-y: auto;">
+        <code>void JNICALL Starlight_1(JNIEnv *env, jobject obj, jint arg0) {
     jvalue cstack0; memset(&cstack0, 0, sizeof(jvalue));
     jvalue cstack1; memset(&cstack1, 0, sizeof(jvalue));
     jvalue cstack2; memset(&cstack2, 0, sizeof(jvalue));
@@ -777,20 +905,19 @@ footer {
     return;
         return ;
 }</code>
-          </div>
-        </div>
+      </div>
+    </div>
 
-        <!-- After -->
-        <div style="background: var(--glass); border-radius: 20px; padding: 1.5rem; border: 2px solid rgba(74, 144, 226, 0.5); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(74, 144, 226, 0.1); width: 520px; flex-shrink: 0;">
-          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-            <div style="width: 12px; height: 12px; background: #ff5f57; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
-            <span style="margin-left: 0.5rem; color: var(--accent-blue); font-size: 0.9rem; font-weight: 600;">Starlight Shield混淆保护</span>
-            <span style="margin-left: auto; background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink)); color: white; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.75rem;">Protected</span>
-          </div>
-          <div class="code-block" style="height: 380px; overflow-y: auto; margin: 0; border-radius: 10px;">
-            <code style="white-space: pre; font-size: 0.75rem; display: block;">void JNICALL Starlight_1(JNIEnv *env, jobject obj, jint arg0) {
+    <div class="code-window protected">
+      <div class="code-window-header">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-window-title">Starlight Shield 混淆保护</span>
+        <span class="protected-badge">Protected</span>
+      </div>
+      <div class="code-block" style="height: 380px; overflow-y: auto;">
+        <code>void JNICALL Starlight_1(JNIEnv *env, jobject obj, jint arg0) {
     jvalue cstack0; memset(&cstack0, 0, sizeof(jvalue));
     jvalue cstack1; memset(&cstack1, 0, sizeof(jvalue));
     jvalue cstack2; memset(&cstack2, 0, sizeof(jvalue));
@@ -902,29 +1029,25 @@ footer {
     }
         return ;
 }</code>
-          </div>
-        </div>
       </div>
     </div>
+  </div>
 
-    <!-- Java Layer Comparison -->
-    <div style="margin-bottom: 3rem;">
-      <h3 style="margin: 2rem 0 1.5rem; color: var(--text-dark); font-size: 1.5rem; text-align: center;">
-        <span style="background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Java 层代码保护对比</span>
-      </h3>
-      <p style="color: var(--text-light); text-align: center; margin-bottom: 2rem;">将 Java 方法转换为 Native 方法，源代码完全隐藏</p>
-      
-      <div style="display: flex; justify-content: center; gap: 2rem;">
-        <!-- Before -->
-        <div style="background: var(--glass); border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); width: 520px; flex-shrink: 0;">
-          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-            <div style="width: 12px; height: 12px; background: #ff5f57; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
-            <span style="margin-left: 0.5rem; color: var(--text-light); font-size: 0.9rem; font-weight: 500;">混淆前 - 源码暴露</span>
-          </div>
-          <div class="code-block" style="height: 320px; overflow-y: auto; margin: 0; border-radius: 10px;">
-            <code style="white-space: pre; font-size: 0.85rem; display: block;">private void checkCollision() {
+  <div class="code-comparison-title reveal" style="margin-top: 4rem;">
+    <span>Java 层代码保护对比</span>
+  </div>
+  <p style="color: rgba(255,255,255,0.4); text-align: center; margin-bottom: 2rem;">将 Java 方法转换为 Native 方法，源代码完全隐藏</p>
+  
+  <div class="comparison-container reveal">
+    <div class="code-window">
+      <div class="code-window-header">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-window-title">混淆前 - 源码暴露</span>
+      </div>
+      <div class="code-block" style="height: 320px; overflow-y: auto;">
+        <code>private void checkCollision() {
     Tuple var1 = (Tuple)this.positions.get(this.positions.size() - 1);
 
     for (int var2 = 0; var2 <= this.positions.size() - 2; var2++) {
@@ -944,52 +1067,43 @@ footer {
         this.spawnFood(this.foodPosition);
     }
 }</code>
-          </div>
-        </div>
-
-        <!-- After -->
-        <div style="background: var(--glass); border-radius: 20px; padding: 1.5rem; border: 2px solid rgba(74, 144, 226, 0.5); backdrop-filter: blur(10px); box-shadow: 0 8px 32px rgba(74, 144, 226, 0.1); width: 520px; flex-shrink: 0; display: flex; flex-direction: column;">
-          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-            <div style="width: 12px; height: 12px; background: #ff5f57; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #febc2e; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #28c840; border-radius: 50%;"></div>
-            <span style="margin-left: 0.5rem; color: var(--accent-blue); font-size: 0.9rem; font-weight: 600;">混淆后 - 仅保留接口</span>
-            <span style="margin-left: auto; background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink)); color: white; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.75rem;">Protected</span>
-          </div>
-          <div class="code-block" style="height: 320px; overflow-y: auto; margin: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-            <code style="white-space: pre; font-size: 1rem; text-align: center;">private native void checkCollision();</code>
-          </div>
-        </div>
       </div>
     </div>
 
-    <!-- Summary -->
-    <div style="background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(255, 126, 185, 0.1) 100%); border-radius: 20px; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px); text-align: center; margin: 0 auto; max-width: 900px;">
-      <h4 style="color: var(--text-dark); margin-bottom: 1rem; font-size: 1.3rem;">保护效果总结</h4>
-      <p style="color: var(--text-light); line-height: 1.8; max-width: 800px; margin: 0 auto;">
-        通过Starlight Shield处理后的代码，Java 层仅保留 Native 方法声明，所有业务逻辑被转换到 C 层并经过多层混淆保护，
-        包括<strong>动态解密</strong>、<strong>虚假控制流</strong>、<strong>字符串加密</strong>和<strong>死代码注入</strong>等技术，
-        有效防止反编译和代码分析。
-      </p>
+    <div class="code-window protected">
+      <div class="code-window-header">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-window-title">混淆后 - 仅保留接口</span>
+        <span class="protected-badge">Protected</span>
+      </div>
+      <div class="code-block" style="height: 320px; overflow-y: auto; display: flex; align-items: center; justify-content: center;">
+        <code style="font-size: 1rem; text-align: center;">private native void checkCollision();</code>
+      </div>
     </div>
+  </div>
 
+  <div class="summary-box reveal">
+    <h4>保护效果总结</h4>
+    <p>通过 Starlight Shield 处理后的代码，Java 层仅保留 Native 方法声明，所有业务逻辑被转换到 C 层并经过多层混淆保护，包括<strong>动态解密</strong>、<strong>虚假控制流</strong>、<strong>字符串加密</strong>和<strong>死代码注入</strong>等技术，有效防止反编译和代码分析。</p>
   </div>
 </section>
 
 <section class="requirements" id="requirements">
   <div class="requirements-content">
-    <h2 class="section-title">环境要求</h2>
+    <h2 class="section-title reveal">环境要求</h2>
     <ul class="requirements-list">
-      <li>Java 8 或更高版本</li>
-      <li>Zig 编译器 0.11.0（首次运行会自动下载）</li>
-      <li>足够的磁盘空间用于编译缓存</li>
+      <li class="reveal">Java 8 或更高版本</li>
+      <li class="reveal">Zig 编译器 0.11.0（首次运行会自动下载）</li>
+      <li class="reveal">足够的磁盘空间用于编译缓存</li>
     </ul>
   </div>
 </section>
 
 <section class="contact" id="contact">
-  <h2 class="section-title">联系我们</h2>
-  <p>有任何问题或建议？欢迎通过以下方式联系我们</p>
+  <h2 class="section-title reveal">联系我们</h2>
+  <p style="color: rgba(255,255,255,0.5); margin-bottom: 2rem;">有任何问题或建议？欢迎通过以下方式联系我们</p>
   <div class="contact-links">
     <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
     <a href="https://qm.qq.com/q/hZoerSpkFG" target="_blank">QQ 群</a>
@@ -998,15 +1112,22 @@ footer {
 </section>
 
 <footer>
-  <p>&copy; 2025 Starlight Development Team. All rights reserved.</p>
-  <div class="footer-links">
-    <a href="../index.html">首页</a>
-    <a href="starlight-verification.html">Starlight Verification</a>
-    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img src="../assets/images/Starlight.png" alt="Starlight">
+      Starlight Development Team
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="starlight-verification.html">Starlight Verification</a>
+      <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+    </div>
+    <p class="footer-copy">&copy; 2025 Starlight Development Team. All rights reserved.</p>
   </div>
 </footer>
 
 <script>
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();
@@ -1015,40 +1136,137 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
+// Navbar scroll effect
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-const createParticle = () => {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.left = Math.random() * 100 + '%';
-  p.style.top = '100%';
-  p.style.animationDelay = Math.random() * 5 + 's';
-  const size = Math.random() * 4 + 2;
-  p.style.width = p.style.height = size + 'px';
-  document.getElementById('particles').appendChild(p);
-  setTimeout(() => p.remove(), 20000);
-};
-setInterval(createParticle, 300);
-for (let i = 0; i < 5; i++) setTimeout(createParticle, i * 200);
-
-const io = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+// Scroll reveal animation
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
     if (entry.isIntersecting) {
-      anime({
-        targets: entry.target,
-        opacity: [0, 1],
-        translateY: [30, 0],
-        delay: i * 100,
-        duration: 800,
-        easing: 'easeOutQuad'
-      });
-      io.unobserve(entry.target);
+      entry.target.classList.add('active');
+      revealObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1 });
-document.querySelectorAll('.feature-card').forEach(card => io.observe(card));
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// Hero Canvas Animation - Enhanced with flowing particles
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+let particles = [];
+let mouseX = 0, mouseY = 0;
+
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+window.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+resize();
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.opacity = Math.random() * 0.5 + 0.1;
+    this.hue = Math.random() * 60 + 200;
+  }
+  update() {
+    const dx = this.x - mouseX;
+    const dy = this.y - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 150) {
+      const force = (150 - dist) / 150;
+      this.speedX += (dx / dist) * force * 0.02;
+      this.speedY += (dy / dist) * force * 0.02;
+    }
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.speedX *= 0.99;
+    this.speedY *= 0.99;
+    if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${this.hue}, 70%, 60%, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+let waveOffset = 0;
+function drawWaves() {
+  waveOffset += 0.005;
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, height * 0.3 + i * 80);
+    for (let x = 0; x < width; x += 5) {
+      const y = height * 0.3 + i * 80 + Math.sin(x * 0.003 + waveOffset + i) * 30;
+      ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = `rgba(74, 144, 226, ${0.03 - i * 0.005})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+  drawWaves();
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  particles.forEach((p1, i) => {
+    particles.slice(i + 1).forEach(p2 => {
+      const dx = p1.x - p2.x;
+      const dy = p1.y - p2.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+        gradient.addColorStop(0, `rgba(74, 144, 226, ${0.1 * (1 - dist / 150)})`);
+        gradient.addColorStop(1, `rgba(255, 126, 185, ${0.1 * (1 - dist / 150)})`);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    });
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Magnetic hover effect for cards
+document.querySelectorAll('.feature-card, .platform-item, .code-window').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${-y * 0.02}deg) rotateY(${x * 0.02}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
 </script>
 </body>
 </html>

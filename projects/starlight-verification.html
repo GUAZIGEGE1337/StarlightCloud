@@ -5,35 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Starlight Verification - 安全验证系统 | Starlight Development Team</title>
 <link rel="icon" href="../assets/images/Starlight.png" type="image/png">
-<script src="../assets/js/anime.min.js"></script>
 <style>
 :root {
-  --primary-blue: #e6f0ff;
-  --primary-pink: #ffe6f0;
   --accent-blue: #4a90e2;
   --accent-pink: #ff7eb9;
-  --text-dark: #2d3748;
-  --text-light: #718096;
-  --white: rgba(255, 255, 255, 0.85);
-  --glass: rgba(255, 255, 255, 0.25);
+  --accent-purple: #8b5cf6;
+  --accent-cyan: #06b6d4;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-pink) 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  color: var(--text-dark);
+  animation: gradientShift 20s ease infinite;
+  color: #e2e8f0;
   line-height: 1.6;
   min-height: 100vh;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  overflow-x: hidden;
 }
 
 @keyframes gradientShift {
@@ -41,26 +31,31 @@ body {
   50% { background-position: 100% 50%; }
 }
 
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent-blue), var(--accent-pink)); border-radius: 4px; }
+
+/* Navigation */
 nav {
   position: fixed;
   top: 0;
   width: 100%;
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 1000;
   padding: 1rem 5%;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 nav.scrolled {
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(15, 23, 42, 0.95);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
 .nav-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -72,17 +67,19 @@ nav.scrolled {
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  color: var(--text-dark);
-  font-weight: 600;
-  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
 }
 
 .logo-icon {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: drop-shadow(0 0 10px rgba(74, 144, 226, 0.5));
 }
 
 .logo-icon img {
@@ -93,16 +90,17 @@ nav.scrolled {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
   list-style: none;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: var(--text-dark);
+  color: rgba(255,255,255,0.7);
   font-weight: 500;
   position: relative;
   transition: color 0.3s ease;
+  font-size: 0.95rem;
 }
 
 .nav-links a::after {
@@ -116,10 +114,10 @@ nav.scrolled {
   transition: width 0.3s ease;
 }
 
-.nav-links a:hover::after {
-  width: 100%;
-}
+.nav-links a:hover { color: #fff; }
+.nav-links a:hover::after { width: 100%; }
 
+/* Hero */
 .hero {
   min-height: 70vh;
   display: flex;
@@ -130,72 +128,69 @@ nav.scrolled {
   overflow: hidden;
 }
 
-.hero::before {
-  content: "";
+.hero-canvas {
   position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: float 6s ease-in-out infinite;
-  z-index: -1;
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.1); }
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 .hero-content {
   text-align: center;
   max-width: 900px;
-  animation: fadeInUp 1s ease;
+  position: relative;
+  z-index: 1;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  gap: 1rem;
+  color: var(--accent-pink);
 }
 
 .hero h1 {
   font-size: 3.5rem;
   margin-bottom: 1rem;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 50%, #fff 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: textGlow 3s ease-in-out infinite alternate;
+  animation: textShine 5s linear infinite;
+  letter-spacing: -2px;
 }
 
-@keyframes textGlow {
-  from { filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.3)); }
-  to { filter: drop-shadow(0 0 30px rgba(255, 126, 185, 0.4)); }
+@keyframes textShine {
+  to { background-position: 200% center; }
 }
 
 .hero .subtitle {
   font-size: 1.3rem;
-  color: var(--text-light);
+  color: rgba(255,255,255,0.6);
   margin-bottom: 1.5rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.3s forwards;
 }
 
 .hero p {
   font-size: 1.15rem;
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.5s forwards;
 }
 
 .hero-buttons {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  opacity: 0;
-  animation: fadeInUp 1s ease 0.7s forwards;
   flex-wrap: wrap;
 }
 
@@ -209,49 +204,62 @@ nav.scrolled {
   text-decoration: none;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
   border: none;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.cta-button:hover::before { left: 100%; }
 .cta-button:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.5);
 }
 
 .cta-button.outline {
   background: transparent;
-  color: var(--accent-blue);
-  border: 2px solid var(--accent-blue);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
   box-shadow: none;
 }
 
 .cta-button.outline:hover {
-  background: var(--accent-blue);
-  color: #fff;
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.5);
 }
 
+/* Section Title */
 .section-title {
   text-align: center;
   font-size: 2.5rem;
-  margin-bottom: 3rem;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
 }
 
 .section-subtitle {
   text-align: center;
-  color: var(--text-light);
-  margin-top: -2rem;
+  color: rgba(255,255,255,0.4);
   margin-bottom: 3rem;
   font-size: 1.1rem;
 }
 
+/* Features */
 .features {
   padding: 5rem 5%;
   max-width: 1200px;
@@ -260,53 +268,47 @@ nav.scrolled {
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
   margin-top: 3rem;
 }
 
 .feature-card {
-  background: var(--glass);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
   padding: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  opacity: 0;
-  transform: translateY(30px);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
 }
 
 .feature-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transform-origin: left;
+  transition: transform 0.4s ease;
 }
 
-.feature-card:hover::before {
-  transform: scaleX(1);
-}
+.feature-card:hover::before { transform: scaleX(1); }
 
 .feature-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 .feature-icon {
   width: 60px;
   height: 60px;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(255, 126, 185, 0.2));
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -316,7 +318,7 @@ nav.scrolled {
 }
 
 .feature-card:hover .feature-icon {
-  transform: rotate(15deg) scale(1.1);
+  transform: rotate(10deg) scale(1.1);
 }
 
 .feature-icon svg {
@@ -332,51 +334,56 @@ nav.scrolled {
 .feature-card h3 {
   font-size: 1.4rem;
   margin-bottom: 1rem;
-  color: var(--text-dark);
+  color: #fff;
 }
 
 .feature-card p {
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   line-height: 1.7;
 }
 
+/* Pricing */
 .pricing {
   padding: 5rem 5%;
-  background: linear-gradient(135deg, rgba(230, 240, 255, 0.4) 0%, rgba(255, 230, 240, 0.4) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(74, 144, 226, 0.05) 50%, transparent 100%);
   text-align: center;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
 }
 
 .price-card {
   max-width: 500px;
   margin: 3rem auto;
-  background: var(--glass);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 25px;
   padding: 3rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.price-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
 }
 
 .price-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 .price-tag {
   font-size: 3rem;
   font-weight: 700;
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
   margin: 1rem 0;
   position: relative;
   display: inline-block;
@@ -402,7 +409,7 @@ nav.scrolled {
 
 .price-features li {
   padding: 0.5rem 0;
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   position: relative;
   padding-left: 2rem;
 }
@@ -416,6 +423,7 @@ nav.scrolled {
   font-size: 1.2rem;
 }
 
+/* Updates */
 .updates {
   padding: 5rem 5%;
   max-width: 1200px;
@@ -423,22 +431,36 @@ nav.scrolled {
 }
 
 .update-item {
-  background: var(--glass);
+  background: rgba(255,255,255,0.03);
   border-radius: 15px;
   padding: 2rem;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+  border: 1px solid rgba(255,255,255,0.08);
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
+
+.update-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--accent-blue), var(--accent-pink));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease;
+}
+
+.update-item:hover::before { transform: scaleY(1); }
 
 .update-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(74, 144, 226, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
 .update-date {
@@ -449,49 +471,37 @@ nav.scrolled {
 }
 
 .update-content {
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   line-height: 1.6;
 }
 
+/* EULA */
 .eula-section {
   padding: 5rem 5%;
-  max-width: 900px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, rgba(230, 240, 255, 0.3) 0%, rgba(255, 230, 240, 0.3) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(74, 144, 226, 0.05) 50%, transparent 100%);
 }
 
 .eula-container {
-  background: var(--glass);
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.03);
   border-radius: 25px;
   padding: 3rem;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+  border: 1px solid rgba(255,255,255,0.08);
   max-height: 70vh;
   overflow-y: auto;
   position: relative;
 }
 
-.eula-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.eula-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
-.eula-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
-  border-radius: 4px;
-}
+.eula-container::-webkit-scrollbar { width: 8px; }
+.eula-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+.eula-container::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent-blue), var(--accent-pink)); border-radius: 4px; }
 
 .eula-content h3 {
   font-size: 1.4rem;
   margin: 2rem 0 1rem;
-  color: var(--text-dark);
-  background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 700;
@@ -500,12 +510,12 @@ nav.scrolled {
 .eula-content h4 {
   font-size: 1.1rem;
   margin: 1.5rem 0 0.5rem;
-  color: var(--text-dark);
+  color: rgba(255,255,255,0.8);
   font-weight: 600;
 }
 
 .eula-content p, .eula-content li {
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   line-height: 1.8;
   margin-bottom: 0.8rem;
 }
@@ -515,9 +525,7 @@ nav.scrolled {
   margin-bottom: 1rem;
 }
 
-.eula-content li {
-  margin-bottom: 0.5rem;
-}
+.eula-content li { margin-bottom: 0.5rem; }
 
 .eula-date {
   text-align: center;
@@ -530,13 +538,11 @@ nav.scrolled {
 .eula-contact {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 2px solid rgba(255, 255, 255, 0.4);
+  border-top: 1px solid rgba(255,255,255,0.1);
   text-align: center;
 }
 
-.eula-contact p {
-  margin-bottom: 0.5rem;
-}
+.eula-contact p { margin-bottom: 0.5rem; color: rgba(255,255,255,0.5); }
 
 .eula-contact a {
   color: var(--accent-blue);
@@ -545,10 +551,9 @@ nav.scrolled {
   transition: color 0.3s ease;
 }
 
-.eula-contact a:hover {
-  color: var(--accent-pink);
-}
+.eula-contact a:hover { color: var(--accent-pink); }
 
+/* Contact */
 .contact {
   padding: 5rem 5%;
   max-width: 1200px;
@@ -556,11 +561,12 @@ nav.scrolled {
   text-align: center;
 }
 
+.contact p { color: rgba(255,255,255,0.5); margin-bottom: 2rem; }
+
 .contact-links {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
-  margin-top: 2rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
@@ -570,40 +576,70 @@ nav.scrolled {
   padding: 1rem 2.5rem;
   border-radius: 50px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   background: linear-gradient(45deg, var(--accent-blue), var(--accent-pink));
   box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
+.contact-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.contact-links a:hover::before { left: 100%; }
 .contact-links a:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(74, 144, 226, 0.5);
 }
 
+/* Footer */
 footer {
-  background: rgba(255, 255, 255, 0.4);
-  padding: 2rem 5%;
+  background: rgba(0,0,0,0.3);
+  padding: 3rem 5%;
   text-align: center;
-  color: var(--text-light);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.footer-logo img {
+  width: 32px;
+  height: 32px;
 }
 
 .footer-links {
-  margin-top: 1rem;
   display: flex;
   justify-content: center;
   gap: 2rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
 }
 
 .footer-links a {
-  color: var(--text-light);
+  color: rgba(255,255,255,0.5);
   text-decoration: none;
   transition: color 0.3s ease;
   position: relative;
@@ -620,99 +656,66 @@ footer {
   transition: width 0.3s ease;
 }
 
-.footer-links a:hover {
-  color: var(--accent-blue);
+.footer-links a:hover { color: #fff; }
+.footer-links a:hover::after { width: 100%; }
+
+.footer-copy {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.9rem;
 }
 
-.footer-links a:hover::after {
-  width: 100%;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--accent-blue);
-  text-decoration: none;
-  font-weight: 500;
-  margin-bottom: 2rem;
-  transition: gap 0.3s ease;
-}
-
-.back-link:hover {
-  gap: 1rem;
-}
-
-.particles {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.particle {
+/* Background ambient glow */
+.ambient-glow {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.7);
   border-radius: 50%;
-  animation: floatParticle 20s infinite linear;
-  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+  animation: floatGlow 15s ease-in-out infinite;
 }
 
-@keyframes floatParticle {
-  0% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0.8;
-  }
-  25% {
-    transform: translateY(-100px) translateX(50px) scale(1.2);
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(-200px) translateX(-30px) scale(0.8);
-    opacity: 0.6;
-  }
-  75% {
-    transform: translateY(-300px) translateX(80px) scale(1.1);
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateY(-100vh) translateX(0) scale(0.5);
-    opacity: 0;
-  }
+@keyframes floatGlow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, -30px) scale(1.1); }
+  50% { transform: translate(-30px, 50px) scale(0.9); }
+  75% { transform: translate(20px, 20px) scale(1.05); }
 }
 
+/* Glow pulse effect */
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(74, 144, 226, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(74, 144, 226, 0.4), 0 0 60px rgba(255, 126, 185, 0.2); }
+}
+
+/* Reveal Animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-  .nav-links {
-    gap: 1rem;
-    font-size: 0.9rem;
-  }
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-  .eula-container {
-    padding: 2rem 1.5rem;
-    max-height: 60vh;
-  }
-  .contact-links {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .contact-links a {
-    width: 100%;
-  }
+  .hero h1 { font-size: 2.5rem; }
+  .nav-links { gap: 1rem; font-size: 0.85rem; }
+  .features-grid { grid-template-columns: 1fr; }
+  .eula-container { padding: 2rem 1.5rem; max-height: 60vh; }
+  .contact-links { flex-direction: column; gap: 1rem; }
+  .contact-links a { width: 100%; }
+  .section-title { font-size: 2rem; }
 }
 </style>
 </head>
 <body>
-<div class="particles" id="particles"></div>
 
 <nav id="navbar">
   <div class="nav-container">
@@ -720,9 +723,8 @@ footer {
       <div class="logo-icon"><img src="../assets/images/Starlight.png" alt="Starlight"></div>
       <span>Starlight Team</span>
     </a>
-
     <ul class="nav-links">
-      <li><a href="../index.html#projects">项目</a></li>
+      <li><a href="../index.html">首页</a></li>
       <li><a href="#features">特性</a></li>
       <li><a href="#pricing">价格</a></li>
       <li><a href="#eula">协议</a></li>
@@ -732,6 +734,7 @@ footer {
 </nav>
 
 <section class="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
   <div class="hero-content">
     <a href="../index.html" class="back-link">← 返回首页</a>
     <h1>Starlight Verification</h1>
@@ -745,10 +748,12 @@ footer {
 </section>
 
 <section class="features" id="features">
-  <h2 class="section-title">核心特性</h2>
-  <p class="section-subtitle">全方位的安全验证服务</p>
+  <div class="ambient-glow" style="width:400px;height:400px;background:radial-gradient(circle, var(--accent-blue), transparent 70%);top:10%;left:-10%;"></div>
+  <div class="ambient-glow" style="width:300px;height:300px;background:radial-gradient(circle, var(--accent-pink), transparent 70%);bottom:10%;right:-5%;animation-delay:-5s;"></div>
+  <h2 class="section-title reveal">核心特性</h2>
+  <p class="section-subtitle reveal">全方位的安全验证服务</p>
   <div class="features-grid">
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M16 2h-3v2h3v4h-2v2h-2v-2h-2v2H9v-2H7v4h3v2h3v-2h2v2h2v-2h2v-2h2V8h-2V6h-2V4h-2V2z"/></svg>
       </div>
@@ -756,7 +761,7 @@ footer {
       <p>提供完善的 API 接口，大幅降低开发者部署成本。完整的技术支持，部署仅需几分钟即可接入使用。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 8l10 5 10-5"/></svg>
       </div>
@@ -764,7 +769,7 @@ footer {
       <p>支持安全的邮箱密码找回机制，采用加密令牌验证，确保账户安全。用户可通过验证邮箱快速重置密码。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="1"/><rect x="4" y="14" width="16" height="6" rx="1"/><path d="M12 10v4"/></svg>
       </div>
@@ -772,7 +777,7 @@ footer {
       <p>基于高性能分布式架构，提供 99.9% 的可用性保证。自动负载均衡和故障转移，确保验证服务持续稳定运行。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg>
       </div>
@@ -780,7 +785,7 @@ footer {
       <p>内置 IRC 聊天功能，支持实时在线交流。提供私聊、群组、频道等多种沟通方式，方便用户即时互动。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M7 7h10M7 11h10M7 15h6"/></svg>
       </div>
@@ -788,7 +793,7 @@ footer {
       <p>采用现代化 UI 设计，界面简洁直观。即使是新手用户也能快速上手，提供流畅的用户体验和清晰的操作指引。</p>
     </div>
 
-    <div class="feature-card">
+    <div class="feature-card reveal">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M12 2l4 4v6a8 8 0 0 1-8 8 8 8 0 0 1-8-8V6l4-4z"/></svg>
       </div>
@@ -799,11 +804,12 @@ footer {
 </section>
 
 <section class="pricing" id="pricing">
-  <h2 class="section-title">灵活的价格方案</h2>
-  <div class="price-card">
-    <h3>基础版</h3>
+  <div class="ambient-glow" style="width:500px;height:500px;background:radial-gradient(circle, var(--accent-purple), transparent 70%);top:20%;right:-15%;animation-delay:-8s;"></div>
+  <h2 class="section-title reveal">灵活的价格方案</h2>
+  <div class="price-card reveal">
+    <h3 style="color: #fff; font-size: 1.5rem; margin-bottom: 0.5rem;">基础版</h3>
     <div class="price-tag">¥10<span style="font-size:1rem">/月</span></div>
-    <p>性价比之选，包含核心功能</p>
+    <p style="color: rgba(255,255,255,0.5);">性价比之选，包含核心功能</p>
     <ul class="price-features">
       <li>验证服务</li>
       <li>IRC 聊天服务</li>
@@ -816,9 +822,10 @@ footer {
 </section>
 
 <section class="updates" id="updates">
-  <h2 class="section-title">更新日志</h2>
+  <div class="ambient-glow" style="width:400px;height:400px;background:radial-gradient(circle, var(--accent-cyan), transparent 70%);bottom:10%;left:-10%;animation-delay:-12s;"></div>
+  <h2 class="section-title reveal">更新日志</h2>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">2.1 版本</div>
     <div class="update-content">添加证书管理功能用于客户端和服务端安全通信</div>
     <div class="update-content">优化代码格式和导入顺序</div>
@@ -827,7 +834,7 @@ footer {
     <div class="update-content">增强客户端安全防护机制</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">2.0 版本</div>
     <div class="update-content">升级版本号至 2.0，重构系统核心架构</div>
     <div class="update-content">格式化代码并优化进程终止功能</div>
@@ -840,7 +847,7 @@ footer {
     <div class="update-content">添加反篡改检测功能并优化安全验证流程</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">1.8.2 版本</div>
     <div class="update-content">更新版本并调整系统配置</div>
     <div class="update-content">更新服务器配置并添加用户名中文字符验证</div>
@@ -851,7 +858,7 @@ footer {
     <div class="update-content">更新版本并重构 HWID 生成和配置管理</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">1.8 版本</div>
     <div class="update-content">将多个类中的私有成员改为公共访问权限</div>
     <div class="update-content">优化代码格式和导入声明</div>
@@ -862,7 +869,7 @@ footer {
     <div class="update-content">格式化代码并优化 HWID 生成逻辑</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">1.7 版本</div>
     <div class="update-content">修改连通信方式为 Netty，优化通信加密方式</div>
     <div class="update-content">添加通信签名效验、公钥私钥验证、心跳验证</div>
@@ -882,60 +889,60 @@ footer {
     <div class="update-content">优化图形渲染质量和 IP 封禁提示信息</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">1.6 版本</div>
     <div class="update-content">支持更多平台</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">1.5 版本</div>
     <div class="update-content">补全版本检测逻辑，修复已知问题</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">1.4 版本</div>
     <div class="update-content">修改字体为 MiSans，修复已知问题</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">1.3 版本</div>
     <div class="update-content">同步后端修改，完善并开启重置信息功能</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">1.2 版本</div>
     <div class="update-content">重构客户端代码，修复已知问题</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">1.1 版本</div>
     <div class="update-content">修复已知问题</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">2025年10月</div>
     <div class="update-content">重构双端通信协议，添加完善项目激活码功能及相关逻辑，重置版本号为 1.0</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">2025年8月</div>
     <div class="update-content">开放注册功能，重构服务端逻辑，完善用户面板</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">2025年7月</div>
     <div class="update-content">客户端界面重构，采用更加现代化界面和 macOS 标题栏</div>
   </div>
 
-  <div class="update-item">
+  <div class="update-item reveal">
     <div class="update-date">2024年10月</div>
     <div class="update-content">该项目更新首个版本并命名为 Starlight Verification，正式发布安全验证解决方案</div>
   </div>
 </section>
 
 <section class="eula-section" id="eula">
-  <h2 class="section-title">用户协议</h2>
-  <div class="eula-container">
+  <h2 class="section-title reveal">用户协议</h2>
+  <div class="eula-container reveal">
     <div class="eula-content">
       <div class="eula-date">最后更新日期：2025 年 2 月 9日</div>
       
@@ -1022,7 +1029,7 @@ footer {
 </section>
 
 <section class="contact" id="contact">
-  <h2 class="section-title">联系我们</h2>
+  <h2 class="section-title reveal">联系我们</h2>
   <p>有任何问题或建议？欢迎通过以下方式联系我们</p>
   <div class="contact-links">
     <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
@@ -1032,15 +1039,22 @@ footer {
 </section>
 
 <footer>
-  <p>&copy; 2025 Starlight Development Team. All rights reserved.</p>
-  <div class="footer-links">
-    <a href="../index.html">首页</a>
-    <a href="starlight-shield.html">Starlight Shield</a>
-    <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+  <div class="footer-content">
+    <div class="footer-logo">
+      <img src="../assets/images/Starlight.png" alt="Starlight">
+      Starlight Development Team
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="starlight-shield.html">Starlight Shield</a>
+      <a href="https://github.com/GUAZIGEGE1337" target="_blank">GitHub</a>
+    </div>
+    <p class="footer-copy">&copy; 2025 Starlight Development Team. All rights reserved.</p>
   </div>
 </footer>
 
 <script>
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();
@@ -1049,41 +1063,137 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
+// Navbar scroll effect
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-const createParticle = () => {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.left = Math.random() * 100 + '%';
-  p.style.top = '100%';
-  p.style.animationDelay = Math.random() * 5 + 's';
-  const size = Math.random() * 4 + 2;
-  p.style.width = p.style.height = size + 'px';
-  document.getElementById('particles').appendChild(p);
-  setTimeout(() => p.remove(), 20000);
-};
-setInterval(createParticle, 300);
-for (let i = 0; i < 5; i++) setTimeout(createParticle, i * 200);
-
-const io = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
+// Scroll reveal animation
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
     if (entry.isIntersecting) {
-      anime({
-        targets: entry.target,
-        opacity: [0, 1],
-        translateY: [30, 0],
-        delay: i * 100,
-        duration: 800,
-        easing: 'easeOutQuad'
-      });
-      io.unobserve(entry.target);
+      entry.target.classList.add('active');
+      revealObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1 });
-document.querySelectorAll('.feature-card').forEach(card => io.observe(card));
-document.querySelectorAll('.update-item').forEach(item => io.observe(item));
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// Hero Canvas Animation - Enhanced with flowing particles
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+let particles = [];
+let mouseX = 0, mouseY = 0;
+
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+window.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+resize();
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.5;
+    this.speedY = (Math.random() - 0.5) * 0.5;
+    this.opacity = Math.random() * 0.5 + 0.1;
+    this.hue = Math.random() * 60 + 200;
+  }
+  update() {
+    const dx = this.x - mouseX;
+    const dy = this.y - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 150) {
+      const force = (150 - dist) / 150;
+      this.speedX += (dx / dist) * force * 0.02;
+      this.speedY += (dy / dist) * force * 0.02;
+    }
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.speedX *= 0.99;
+    this.speedY *= 0.99;
+    if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${this.hue}, 70%, 60%, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+let waveOffset = 0;
+function drawWaves() {
+  waveOffset += 0.005;
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, height * 0.3 + i * 80);
+    for (let x = 0; x < width; x += 5) {
+      const y = height * 0.3 + i * 80 + Math.sin(x * 0.003 + waveOffset + i) * 30;
+      ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = `rgba(74, 144, 226, ${0.03 - i * 0.005})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+  drawWaves();
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  particles.forEach((p1, i) => {
+    particles.slice(i + 1).forEach(p2 => {
+      const dx = p1.x - p2.x;
+      const dy = p1.y - p2.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+        gradient.addColorStop(0, `rgba(74, 144, 226, ${0.1 * (1 - dist / 150)})`);
+        gradient.addColorStop(1, `rgba(255, 126, 185, ${0.1 * (1 - dist / 150)})`);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    });
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Magnetic hover effect for cards
+document.querySelectorAll('.feature-card, .price-card, .update-item').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${-y * 0.02}deg) rotateY(${x * 0.02}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
 </script>
 </body>
 </html>
