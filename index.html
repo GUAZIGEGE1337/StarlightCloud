@@ -1128,8 +1128,8 @@ footer {
 
 .leaders-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }
 
 .leader-card {
@@ -1231,13 +1231,17 @@ footer {
   line-height: 1.8;
 }
 
+@media (max-width: 1024px) {
+  .leaders-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
   .leaders-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-  }
-  .leaders-modal {
-    padding: 2rem 1.5rem;
   }
   .leader-avatar {
     width: 120px;
@@ -1750,6 +1754,13 @@ footer {
         <div class="leader-qq">QQ: <span>2390748112</span></div>
         <p class="leader-bio">Starlight Development Team 核心开发者，深耕 Java 客户端开发与反作弊绕过领域，曾隶属于 Astronaut Development Team、Frog Development Team 等知名项目开发组，积累了丰富的客户端从零到成型全流程实战经验。在 2B2T 社区开发中屡次突破技术边界，对反作弊系统有着深刻的理解与独到的绕过思路。始终追求极致的客户端用户体验，以匠心精神打磨每一个交互细节与性能表现。</p>
       </div>
+      <div class="leader-card">
+        <div class="leader-role">神秘笑脸人</div>
+        <img class="leader-avatar" src="assets/images/E-e-Z.jpg" alt="E-e-Z">
+        <div class="leader-name">E-e-Z</div>
+        <div class="leader-qq">QQ: <span>3220829065</span></div>
+        <p class="leader-bio">全中国顶尖服务端插件开发者，深耕 Minecraft 服务端架构与插件生态，以精湛的技术实力为众多项目提供坚实的服务端支撑。</p>
+      </div>
     </div>
   </div>
 </section>
@@ -2114,8 +2125,6 @@ footer {
         <div class="github-role">神秘笑脸人</div>
         <img class="github-avatar" src="assets/images/E-e-Z.jpg" alt="E-e-Z">
         <div class="github-name">E-e-Z</div>
-        <div class="github-qq">QQ: <span>3220829065</span></div>
-        <p class="github-bio">全中国顶尖服务端插件开发者，深耕 Minecraft 服务端架构与插件生态，以精湛的技术实力为众多项目提供坚实的服务端支撑。</p>
         <a class="github-link" href="https://github.com/E-e-Z" target="_blank">访问主页</a>
       </div>
     </div>
