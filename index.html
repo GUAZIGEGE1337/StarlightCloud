@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+< !DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -24,12 +24,6 @@
   --angle: 0deg;
 }
 
-@property --angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -48,36 +42,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-  background:
-    radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
-    radial-gradient(ellipse at 80% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 55%);
-  animation: ambientShift 20s ease-in-out infinite alternate;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: noise 0.5s steps(5) infinite;
 }
 
 ::selection {
@@ -186,26 +150,6 @@ nav.scrolled {
 }
 
 /* Global animations */
-@keyframes ambientShift {
-  0% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(3%, -2%) scale(1.05); }
-  66% { transform: translate(-2%, 2%) scale(1.02); }
-  100% { transform: translate(1%, 1%) scale(1.04); }
-}
-
-@keyframes noise {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-1%, -1%); }
-  20% { transform: translate(1%, 1%); }
-  30% { transform: translate(-1%, 1%); }
-  40% { transform: translate(1%, -1%); }
-  50% { transform: translate(-1%, 0); }
-  60% { transform: translate(1%, 0); }
-  70% { transform: translate(0, 1%); }
-  80% { transform: translate(0, -1%); }
-  90% { transform: translate(1%, 1%); }
-}
-
 @keyframes float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50% { transform: translateY(-12px) rotate(1deg); }
@@ -1710,7 +1654,7 @@ footer {
 
       <div class="project-item reveal">
         <div class="project-item-header">
-          <h3>Starlight Drift</h3>
+          <h3>Kasumi</h3>
         </div>
         <p>Java 代码保护工具，对Java字节码进行加密，提供多层安全防护。</p>
         <div class="project-item-tags">
